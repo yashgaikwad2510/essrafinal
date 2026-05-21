@@ -21,6 +21,17 @@ const Footer = () => {
     <footer className="relative w-full bg-white pt-20 overflow-visible">
       
       {/* =========================================================================
+          LAYER 0: WOMAN IMAGE BACKGROUND (NEAR FOOTER)
+          ========================================================================= */}
+      <div className="absolute top-0 right-[15%] -translate-y-[80%] z-0 pointer-events-none w-[250px] md:w-[350px] lg:w-[450px] hidden sm:block opacity-90 mix-blend-multiply">
+        <img 
+          src="/images/woman-in-green.png"
+          alt="Woman in green"
+          className="w-full h-auto object-contain"
+        />
+      </div>
+
+      {/* =========================================================================
           LAYER 1: TRUST DISCLAIMER AREA (WHITE CANVAS)
           ========================================================================= */}
       <div className="w-full text-center px-6 max-w-4xl mx-auto pb-16">
