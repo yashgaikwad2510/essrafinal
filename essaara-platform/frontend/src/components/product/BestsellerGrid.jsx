@@ -6,17 +6,12 @@ import { useCart } from '../../context/CartContext';
 const BestsellerGrid = () => {
   const { addToCart } = useCart();
 
-  // Handlers connected to Global Cart Context
   const handleAddToCart = (productId, selectedVariant) => {
-    console.log(`Adding product ${productId} to cart with size: ${selectedVariant.size} at price: ₹${selectedVariant.price}`);
-    
-    // Using the real CartContext.addToCart logic here
+    // Find the original raw data item reference from your local list
     const productData = mockProducts.find(p => p._id === productId);
-    addToCart({
-      ...productData,
-      price: selectedVariant.price,
-      selectedVariant
-    });
+    if (productData) {
+      addToCart(productData, selectedVariant); // Push item cleanly into context
+    }
   };
 
   const handleAddToWishlist = (productId) => {
