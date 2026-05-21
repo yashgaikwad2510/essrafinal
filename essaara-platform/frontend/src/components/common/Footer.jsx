@@ -33,32 +33,29 @@ const Footer = () => {
       </div>
 
       {/* =========================================================================
-          LAYER 2: ABSOLUTE-POSITIONED BOTANICAL OVERLAYS (THE "PLANT" EFFECT)
+          LAYER 2 & 3: BOTANICAL OVERLAYS + DARK CHARCOAL LINING
           ========================================================================= */}
-      {/* Left Plant Asset */}
-      <div className="absolute left-0 bottom-[340px] md:bottom-[260px] z-10 pointer-events-none w-1/4 max-w-[240px] hidden sm:block">
-        <img 
-          src="/images/leaf-left.png"
-          alt="Ayurvedic Botanical Accent"
-          className="w-full h-auto object-contain origin-bottom-left"
-        />
-      </div>
+      <div className="relative bg-[#363636] text-[#F4EFE6] pt-16 pb-12 px-6 md:px-12 lg:px-16 mt-6">
+        
+        {/* Left Plant Asset */}
+        <div className="absolute left-0 top-0 -translate-y-[55%] z-10 pointer-events-none w-[200px] md:w-[280px] lg:w-[320px] hidden sm:block">
+          <img 
+            src="/images/leaf-left.png"
+            alt="Ayurvedic Botanical Accent"
+            className="w-full h-auto object-contain"
+          />
+        </div>
 
-      {/* Right Plant Asset */}
-      <div className="absolute right-0 bottom-[340px] md:bottom-[240px] z-10 pointer-events-none w-1/4 max-w-[260px] hidden sm:block">
-        <img 
-          src="/images/leaf-right.png"
-          alt="Natural Flora Accent"
-          className="w-full h-auto object-contain origin-bottom-right"
-        />
-      </div>
+        {/* Right Plant Asset */}
+        <div className="absolute right-0 top-0 -translate-y-[60%] z-10 pointer-events-none w-[220px] md:w-[300px] lg:w-[350px] hidden sm:block">
+          <img 
+            src="/images/leaf-right.png"
+            alt="Natural Flora Accent"
+            className="w-full h-auto object-contain"
+          />
+        </div>
 
-
-      {/* =========================================================================
-          LAYER 3: CORE CONTENT SYSTEM (DARK CHARCOAL LINING)
-          ========================================================================= */}
-      <div className="relative bg-[#2C2520] text-[#F4EFE6] pt-16 pb-12 px-6 md:px-12 lg:px-16 border-t border-neutral-800">
-        <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-y-10 gap-x-6">
+        <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-y-10 gap-x-6 relative z-20">
           
           {/* COLUMN 1: SHOP CATALOG LINKS */}
           <div className="flex flex-col gap-3">
@@ -108,26 +105,26 @@ const Footer = () => {
           <div className="flex flex-col gap-3 col-span-2 lg:col-span-1">
             <h4 className="font-sans text-xs font-bold tracking-[0.15em] uppercase text-white mb-2">Sign Up For Our Newsletter!</h4>
             <form onSubmit={handleSubscribe} className="flex flex-col gap-3">
-              <div className="flex border-b border-neutral-500 pb-1">
+              <div className="flex bg-white w-full max-w-sm">
                 <input 
                   type="email" 
                   placeholder="Enter Your Email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="bg-transparent text-white text-xs font-light tracking-wide placeholder-neutral-400 w-full focus:outline-hidden"
+                  className="bg-transparent text-neutral-800 text-xs font-light tracking-wide placeholder-neutral-500 w-full px-3 py-2 focus:outline-hidden"
                   required
                 />
                 <button 
                   type="submit" 
                   disabled={!consentChecked}
-                  className="text-white font-sans text-[10px] font-bold uppercase tracking-widest pl-2 disabled:opacity-40 transition-opacity cursor-pointer"
+                  className="text-neutral-900 font-sans text-[10px] font-bold uppercase tracking-widest px-4 disabled:opacity-40 transition-opacity cursor-pointer whitespace-nowrap"
                 >
                   Subscribe
                 </button>
               </div>
 
               {/* Consent Checkbox */}
-              <label className="flex items-start gap-2 cursor-pointer group mt-1">
+              <label className="flex items-start gap-2 cursor-pointer group mt-2">
                 <input 
                   type="checkbox" 
                   checked={consentChecked}
@@ -148,7 +145,7 @@ const Footer = () => {
         {/* FLOATING ACTION ELEMENT: BACK TO TOP TOGGLE */}
         <button 
           onClick={scrollToTop}
-          className="absolute left-6 md:left-12 bottom-12 bg-white text-[#2C2520] hover:bg-essaara-gold hover:text-white w-9 h-9 rounded-full flex items-center justify-center shadow-md transition-all duration-300 cursor-pointer"
+          className="absolute left-6 md:left-12 bottom-12 bg-white text-[#363636] hover:bg-essaara-gold hover:text-white w-9 h-9 rounded-full flex items-center justify-center shadow-md transition-all duration-300 cursor-pointer z-30"
           aria-label="Scroll to top"
         >
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-4 h-4">
