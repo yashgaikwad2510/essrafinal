@@ -1,5 +1,6 @@
 import React from 'react';
 import BestsellerGrid from '../components/product/BestsellerGrid';
+import ShoppableVideos from '../components/home/ShoppableVideos';
 
 const Home = () => {
   return (
@@ -30,7 +31,7 @@ const Home = () => {
             
             {/* The CTA Button */}
             <div>
-              <button className="bg-white text-essaara-earth font-sans text-sm tracking-widest uppercase px-8 py-3 border border-gray-200 hover:bg-essaara-gold hover:text-white hover:border-essaara-gold transition-all duration-300">
+              <button className="bg-white text-essaara-earth font-sans text-sm tracking-widest uppercase px-8 py-3 border border-gray-200 hover:bg-essaara-gold hover:text-white hover:border-essaara-gold transition-all duration-300 cursor-pointer">
                 Discover Your Ritual
               </button>
             </div>
@@ -40,6 +41,9 @@ const Home = () => {
       
       {/* Signature Collection Grid replaced with BestsellerGrid per user request */}
       <BestsellerGrid />
+
+      {/* Shoppable Video Feeds Section */}
+      <ShoppableVideos />
     </main>
   );
 };
