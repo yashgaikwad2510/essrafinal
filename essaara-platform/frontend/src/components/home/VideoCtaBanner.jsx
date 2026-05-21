@@ -20,29 +20,31 @@ const VideoCtaBanner = () => {
   };
 
   return (
-    <section className="relative w-full bg-white py-12 px-6 md:px-12 lg:px-16 max-w-7xl mx-auto overflow-visible">
+    <section className="relative w-full bg-white py-12 overflow-visible">
       
       {/* =========================================================================
-          DECORATIVE BOTANICAL ASSETS (Layered outside the video banner)
+          DECORATIVE BOTANICAL ASSETS (Touching the horizon/viewport edges)
           ========================================================================= */}
       {/* Bottom Left: Cherry Blossom (Inverted as requested) */}
-      <div className="absolute bottom-6 left-0 md:left-4 z-30 pointer-events-none w-[120px] md:w-[200px] lg:w-[260px] opacity-100 -scale-x-100 -scale-y-100">
+      <div className="absolute bottom-0 left-0 z-30 pointer-events-none w-[200px] md:w-[350px] lg:w-[450px] xl:w-[550px] opacity-100 -scale-x-100 -scale-y-100">
         <img src="/images/chryblosum.png" alt="Cherry Blossom" className="w-full h-auto object-contain drop-shadow-md" />
       </div>
 
       {/* Top Right: Wildflower */}
-      <div className="absolute top-6 right-0 md:right-4 z-30 pointer-events-none w-[120px] md:w-[200px] lg:w-[260px] opacity-100">
+      <div className="absolute top-0 right-0 z-30 pointer-events-none w-[200px] md:w-[350px] lg:w-[450px] xl:w-[550px] opacity-100">
         <img src="/images/wailflower.png" alt="Wildflower" className="w-full h-auto object-contain drop-shadow-md" />
       </div>
 
       {/* Top Right: Bird (perched near the flower) */}
-      <div className="absolute top-20 right-[5%] z-30 pointer-events-none w-[50px] md:w-[80px] lg:w-[90px] opacity-100">
+      <div className="absolute top-[8%] right-[5%] lg:right-[8%] z-30 pointer-events-none w-[80px] md:w-[120px] lg:w-[150px] opacity-100">
         <img src="/images/bird.png" alt="Bird" className="w-full h-auto object-contain drop-shadow-md" />
       </div>
 
-      <div className="relative w-full aspect-[21/9] min-h-[300px] bg-neutral-900 rounded-xl overflow-hidden shadow-xs group z-20">
-        
-        {/* 1. BACKGROUND HTML5 VIDEO PLAYER */}
+      {/* Video Player Container */}
+      <div className="px-6 md:px-12 lg:px-16 max-w-7xl mx-auto relative z-20">
+        <div className="relative w-full aspect-[21/9] min-h-[300px] bg-neutral-900 rounded-xl overflow-hidden shadow-xs group">
+          
+          {/* 1. BACKGROUND HTML5 VIDEO PLAYER */}
         <video
           ref={videoRef}
           src="https://assets.mixkit.co/videos/preview/mixkit-woman-enjoying-a-cup-of-tea-in-nature-43004-large.mp4" // Placeholder luxury wellness clip
@@ -112,6 +114,7 @@ const VideoCtaBanner = () => {
           )}
         </button>
 
+      </div>
       </div>
     </section>
   );
