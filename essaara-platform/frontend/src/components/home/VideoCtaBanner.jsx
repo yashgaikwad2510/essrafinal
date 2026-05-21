@@ -25,19 +25,9 @@ const VideoCtaBanner = () => {
       {/* =========================================================================
           DECORATIVE BOTANICAL ASSETS (Touching the horizon/viewport edges)
           ========================================================================= */}
-      {/* Bottom Left: Cherry Blossom (Inverted as requested) */}
-      <div className="absolute bottom-0 left-0 z-30 pointer-events-none w-[200px] md:w-[350px] lg:w-[450px] xl:w-[550px] opacity-100 -scale-x-100 -scale-y-100">
+      {/* Bottom Left: Cherry Blossom */}
+      <div className="absolute bottom-0 left-0 z-30 pointer-events-none w-[200px] md:w-[350px] lg:w-[450px] xl:w-[550px] opacity-100">
         <img src="/images/chryblosum.png" alt="Cherry Blossom" className="w-full h-auto object-contain drop-shadow-md" />
-      </div>
-
-      {/* Top Right: Wildflower */}
-      <div className="absolute top-0 right-0 z-30 pointer-events-none w-[200px] md:w-[350px] lg:w-[450px] xl:w-[550px] opacity-100">
-        <img src="/images/wailflower.png" alt="Wildflower" className="w-full h-auto object-contain drop-shadow-md" />
-      </div>
-
-      {/* Top Right: Bird (perched near the flower) */}
-      <div className="absolute top-[8%] right-[5%] lg:right-[8%] z-30 pointer-events-none w-[80px] md:w-[120px] lg:w-[150px] opacity-100">
-        <img src="/images/bird.png" alt="Bird" className="w-full h-auto object-contain drop-shadow-md" />
       </div>
 
       {/* Video Player Container */}
