@@ -26,7 +26,7 @@ const VideoCtaBanner = () => {
           DECORATIVE BOTANICAL ASSETS (Touching the horizon/viewport edges)
           ========================================================================= */}
       {/* Top Right: Cherry Blossom */}
-      <div className="absolute top-0 right-0 z-30 pointer-events-none w-[200px] md:w-[350px] lg:w-[450px] xl:w-[550px] opacity-100 -scale-x-100">
+      <div className="absolute top-0 right-0 z-30 pointer-events-none w-[200px] md:w-[350px] lg:w-[450px] xl:w-[550px] opacity-100">
         <img src="/images/chryblosum.png" alt="Cherry Blossom" className="w-full h-auto object-contain drop-shadow-md" />
       </div>
 
