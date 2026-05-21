@@ -38,18 +38,18 @@ const Footer = () => {
       {/* Left Plant Asset */}
       <div className="absolute left-0 bottom-[340px] md:bottom-[260px] z-10 pointer-events-none w-1/4 max-w-[240px] hidden sm:block">
         <img 
-          src="/assets/left-ayurvedic-leaves.png" // Replace with your transparent asset URL
+          src="/images/leafLeftLG.jpg"
           alt="Ayurvedic Botanical Accent"
-          className="w-full h-auto object-contain origin-bottom-left"
+          className="w-full h-auto object-contain origin-bottom-left mix-blend-multiply"
         />
       </div>
 
       {/* Right Plant Asset */}
       <div className="absolute right-0 bottom-[340px] md:bottom-[240px] z-10 pointer-events-none w-1/4 max-w-[260px] hidden sm:block">
         <img 
-          src="/assets/right-botanical-peacock.png" // Replace with your transparent asset URL
+          src="/images/leafRightlg.jpg"
           alt="Natural Flora Accent"
-          className="w-full h-auto object-contain origin-bottom-right"
+          className="w-full h-auto object-contain origin-bottom-right mix-blend-multiply"
         />
       </div>
 
