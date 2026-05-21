@@ -38,7 +38,7 @@ const Footer = () => {
       <div className="relative bg-[#363636] text-[#F4EFE6] pt-16 pb-12 px-6 md:px-12 lg:px-16 mt-6">
         
         {/* Left Plant Asset */}
-        <div className="absolute left-0 top-0 -translate-y-[30%] z-10 pointer-events-none w-[200px] md:w-[280px] lg:w-[350px] hidden sm:block">
+        <div className="absolute left-0 top-0 -translate-y-[60%] z-10 pointer-events-none w-[200px] md:w-[280px] lg:w-[350px] hidden sm:block">
           <img 
             src="/images/leaf-left.png"
             alt="Ayurvedic Botanical Accent"
@@ -47,7 +47,7 @@ const Footer = () => {
         </div>
 
         {/* Right Plant Asset */}
-        <div className="absolute right-0 top-0 -translate-y-[65%] z-10 pointer-events-none w-[220px] md:w-[300px] lg:w-[380px] hidden sm:block">
+        <div className="absolute right-0 top-0 -translate-y-[85%] z-10 pointer-events-none w-[220px] md:w-[300px] lg:w-[380px] hidden sm:block">
           <img 
             src="/images/leaf-right.png"
             alt="Natural Flora Accent"
