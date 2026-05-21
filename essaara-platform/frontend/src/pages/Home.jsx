@@ -1,5 +1,5 @@
 import React from 'react';
-import ProductGrid from '../components/product/ProductGrid';
+import BestsellerGrid from '../components/product/BestsellerGrid';
 
 const Home = () => {
   return (
@@ -38,8 +38,8 @@ const Home = () => {
         </div>
       </section>
       
-      {/* Signature Collection Grid */}
-      <ProductGrid />
+      {/* Signature Collection Grid replaced with BestsellerGrid per user request */}
+      <BestsellerGrid />
     </main>
   );
 };
