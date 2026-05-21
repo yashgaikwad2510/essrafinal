@@ -1,6 +1,7 @@
 import React from 'react';
 import BestsellerGrid from '../components/product/BestsellerGrid';
 import ShoppableVideos from '../components/home/ShoppableVideos';
+import VideoCtaBanner from '../components/home/VideoCtaBanner';
 
 const Home = () => {
   return (
@@ -41,6 +42,9 @@ const Home = () => {
       
       {/* Signature Collection Grid replaced with BestsellerGrid per user request */}
       <BestsellerGrid />
+
+      {/* Interactive Lifestyle Intermission Banner */}
+      <VideoCtaBanner />
 
       {/* Shoppable Video Feeds Section */}
       <ShoppableVideos />
