@@ -20,8 +20,27 @@ const VideoCtaBanner = () => {
   };
 
   return (
-    <section className="w-full bg-white py-12 px-6 md:px-12 lg:px-16 max-w-7xl mx-auto">
-      <div className="relative w-full aspect-[21/9] min-h-[300px] bg-neutral-900 rounded-xl overflow-hidden shadow-xs group">
+    <section className="relative w-full bg-white py-12 px-6 md:px-12 lg:px-16 max-w-7xl mx-auto overflow-hidden">
+      
+      {/* =========================================================================
+          DECORATIVE BOTANICAL ASSETS (Layered outside the video banner)
+          ========================================================================= */}
+      {/* Bottom Left: Cherry Blossom (Inverted as requested) */}
+      <div className="absolute bottom-4 left-0 z-10 pointer-events-none w-[120px] md:w-[200px] lg:w-[280px] mix-blend-multiply opacity-90 -scale-x-100 -scale-y-100">
+        <img src="/images/chryblosum.png" alt="Cherry Blossom" className="w-full h-auto object-contain" />
+      </div>
+
+      {/* Top Right: Wildflower */}
+      <div className="absolute top-4 right-0 z-10 pointer-events-none w-[120px] md:w-[200px] lg:w-[280px] mix-blend-multiply opacity-90">
+        <img src="/images/wailflower.png" alt="Wildflower" className="w-full h-auto object-contain" />
+      </div>
+
+      {/* Top Right: Bird (perched near the flower) */}
+      <div className="absolute top-16 right-[10%] z-10 pointer-events-none w-[50px] md:w-[80px] lg:w-[100px] mix-blend-multiply opacity-90">
+        <img src="/images/bird.png" alt="Bird" className="w-full h-auto object-contain" />
+      </div>
+
+      <div className="relative w-full aspect-[21/9] min-h-[300px] bg-neutral-900 rounded-xl overflow-hidden shadow-xs group z-20">
         
         {/* 1. BACKGROUND HTML5 VIDEO PLAYER */}
         <video
