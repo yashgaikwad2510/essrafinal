@@ -23,7 +23,7 @@ const Footer = () => {
       {/* =========================================================================
           LAYER 0: WOMAN IMAGE BACKGROUND (NEAR FOOTER)
           ========================================================================= */}
-      <div className="absolute top-0 right-[15%] -translate-y-[80%] z-0 pointer-events-none w-[250px] md:w-[350px] lg:w-[450px] hidden sm:block opacity-90 mix-blend-multiply">
+      <div className="absolute top-0 right-[3%] -translate-y-[60%] z-0 pointer-events-none w-[250px] md:w-[350px] lg:w-[450px] hidden sm:block opacity-90 mix-blend-multiply">
         <img 
           src="/images/woman-in-green.png"
           alt="Woman in green"
