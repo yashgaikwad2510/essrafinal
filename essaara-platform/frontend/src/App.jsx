@@ -1,6 +1,6 @@
 import React from 'react';
 import Navbar from './components/common/Navbar';
-import Home from './pages/Home';
+import GiftingPage from './pages/GiftingPage';
 import Footer from './components/common/Footer';
 import { AuthProvider } from './context/AuthContext';
 
@@ -10,7 +10,7 @@ function App() {
       <div className="min-h-screen flex flex-col bg-[#FDFBF7]">
         <Navbar />
         <div className="flex-grow">
-          <Home />
+          <GiftingPage />
         </div>
         <Footer />
       </div>
