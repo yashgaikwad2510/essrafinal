@@ -1,112 +1,101 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState } from 'react';
+import { essaaraProducts } from '../data/products'; // Direct single source of truth!
 
-// Initialize the Context
 const CartContext = createContext();
 
-// Define our premium business thresholds
-const FREE_SHIPPING_THRESHOLD = 3000; // Free shipping on orders above ₹3,000
-
 export const CartProvider = ({ children }) => {
+  // Global single-source arrays
+  const [products, setProducts] = useState(essaaraProducts);
   const [cart, setCart] = useState([]);
-  const [cartTotal, setCartTotal] = useState(0);
-  const [shippingCost, setShippingCost] = useState(0);
-  const [amountToFreeShipping, setAmountToFreeShipping] = useState(FREE_SHIPPING_THRESHOLD);
+  const [isCartOpen, setIsCartOpen] = useState(false);
 
-  // Automatically recalculate running totals whenever the cart state changes
-  useEffect(() => {
-    // 1. Calculate total price of items in bag
-    const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-    setCartTotal(total);
+  // 1. GLOBAL ADD-TO-CART (Updates bag items and checks real inventory stock pools)
+  const addToCart = (productId, selectedOption) => {
+    // Find the master product row specs
+    const targetProduct = products.find(p => p.id === productId);
+    if (!targetProduct || targetProduct.stock === 0) return; // Block out-of-stock additions
 
-    // 2. Evaluate luxury shipping rules
-    if (total === 0) {
-      setShippingCost(0);
-      setAmountToFreeShipping(FREE_SHIPPING_THRESHOLD);
-    } else if (total >= FREE_SHIPPING_THRESHOLD) {
-      setShippingCost(0); // Free Shipping achieved
-      setAmountToFreeShipping(0);
-    } else {
-      setShippingCost(150); // Flat standard rate under threshold
-      setAmountToFreeShipping(FREE_SHIPPING_THRESHOLD - total);
-    }
-  }, [cart]);
-
-  // Action Handler: Add Item or Increment existing matching variant
-  const addToCart = (product, selectedVariant) => {
     setCart((prevCart) => {
-      // Check if this specific item ID AND specific size combination already exists
-      const existingItemIndex = prevCart.findIndex(
-        (item) => item._id === product._id && item.size === selectedVariant.size
+      const existingIndex = prevCart.findIndex(
+        (item) => item.id === productId && item.option?.id === selectedOption?.id
       );
 
-      if (existingItemIndex > -1) {
-        // Increment quantity of existing match
+      if (existingIndex > -1) {
         const newCart = [...prevCart];
-        newCart[existingItemIndex].quantity += 1;
+        newCart[existingIndex].quantity += 1;
         return newCart;
       }
 
-      // Append brand new item configuration to selection array
-      return [
-        ...prevCart,
-        {
-          _id: product._id,
-          name: product.name,
-          image: product.images[0],
-          size: selectedVariant.size,
-          price: selectedVariant.price,
-          quantity: 1,
-        },
-      ];
+      return [...prevCart, { ...targetProduct, option: selectedOption, quantity: 1 }];
     });
+
+    // 2. DYNAMIC STATE ADJUSTMENT: Deduct item from inventory state pool instantly
+    setProducts((prevProducts) =>
+      prevProducts.map((p) =>
+        p.id === productId ? { ...p, stock: p.stock - 1 } : p
+      )
+    );
+
+    setIsCartOpen(true);
   };
 
-  // Action Handler: Modify item count safely from Cart UI drawers
-  const updateQuantity = (productId, size, amount) => {
-    setCart((prevCart) =>
-      prevCart
-        .map((item) => {
-          if (item._id === productId && item.size === size) {
-            const updatedQty = item.quantity + amount;
-            return { ...item, quantity: updatedQty };
-          }
-          return item;
-        })
-        .filter((item) => item.quantity > 0) // Automatically drop item if count drops to 0
+  // 3. GLOBAL QUANTITY COUNTER MODIFIER (Syncs inventory levels in reverse)
+  const updateQuantity = (productId, optionId, delta) => {
+    const targetProduct = products.find(p => p.id === productId);
+    
+    // If user is trying to add more, make sure we have enough inventory
+    if (delta > 0 && targetProduct.stock === 0) return;
+
+    setCart((prevCart) => {
+      return prevCart.map((item) => {
+        if (item.id === productId && item.option?.id === optionId) {
+          const newQty = item.quantity + delta;
+          return newQty > 0 ? { ...item, quantity: newQty } : item;
+        }
+        return item;
+      }).filter(item => item.quantity > 0);
+    });
+
+    // Sync inventory stock pools in reverse to reflect the checkout state change
+    setProducts((prevProducts) =>
+      prevProducts.map((p) =>
+        p.id === productId ? { ...p, stock: p.stock - delta } : p
+      )
     );
   };
 
-  // Action Handler: Instant wipeout of a line item
-  const removeFromCart = (productId, size) => {
+  // 4. GLOBAL REMOVE ITEM PIPELINE
+  const removeFromCart = (productId, optionId, currentQuantity) => {
     setCart((prevCart) =>
-      prevCart.filter((item) => !(item._id === productId && item.size === size))
+      prevCart.filter((item) => !(item.id === productId && item.option?.id === optionId))
+    );
+
+    // Return the items directly back to the global store stock pool
+    setProducts((prevProducts) =>
+      prevProducts.map((p) =>
+        p.id === productId ? { ...p, stock: p.stock + currentQuantity } : p
+      )
     );
   };
 
-  const clearCart = () => setCart([]);
+  const getSubtotal = () => {
+    return cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  };
 
   return (
-    <CartContext.Provider value={{
-      cart,
-      cartTotal,
-      shippingCost,
-      amountToFreeShipping,
-      freeShippingThreshold: FREE_SHIPPING_THRESHOLD,
-      addToCart,
-      updateQuantity,
-      removeFromCart,
-      clearCart
+    <CartContext.Provider value={{ 
+      products, // Exposed globally! Components read directly from this reactive array
+      cart, 
+      isCartOpen, 
+      setIsCartOpen, 
+      addToCart, 
+      removeFromCart, 
+      updateQuantity, 
+      getSubtotal 
     }}>
       {children}
     </CartContext.Provider>
   );
 };
 
-// Custom hook for ultra-clean clean consumption across components
-export const useCart = () => {
-  const context = useContext(CartContext);
-  if (!context) {
-    throw new Error('useCart must be used within a CartProvider wrapper');
-  }
-  return context;
-};
+export const useCart = () => useContext(CartContext);
