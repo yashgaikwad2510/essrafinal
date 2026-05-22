@@ -1,57 +1,49 @@
 import React from 'react';
-import ProductCard from './ProductCard';
-import { mockProducts } from '../../data/mockProducts';
-import { useCart } from '../../context/CartContext';
+import { useCart } from '../../context/CartContext'; // Pull directly from the global state loop
 
 const BestsellerGrid = () => {
-  const { addToCart } = useCart();
-
-  const handleAddToCart = (productId, selectedVariant) => {
-    // Find the original raw data item reference from your local list
-    const productData = mockProducts.find(p => p._id === productId);
-    if (productData) {
-      addToCart(productData, selectedVariant); // Push item cleanly into context
-    }
-  };
-
-  const handleAddToWishlist = (productId) => {
-    console.log(`Toggling product ${productId} in wishlist`);
-    // Future: AuthContext.toggleWishlist(productId) logic goes here
-  };
+  const { products, addToCart } = useCart(); // Destructure our global, reactive arrays
 
   return (
-    <section className="w-full bg-white py-16 px-6 md:px-12 lg:px-16 max-w-7xl mx-auto">
+    <section className="w-full bg-white py-12 px-6 max-w-7xl mx-auto">
+      <h2 className="font-serif text-xl md:text-2xl tracking-widest uppercase text-center mb-10">
+        Bestselling Rituals
+      </h2>
       
-      {/* SECTION HEADER BLOCK */}
-      <div className="flex justify-between items-baseline border-b border-neutral-100 pb-4 mb-8">
-        <h2 className="font-serif text-xl md:text-2xl tracking-widest text-essaara-earth uppercase">
-          Seasonal Indulgences
-        </h2>
-        
-        <a 
-          href="/collections/all" 
-          className="font-sans text-[11px] font-bold tracking-widest text-essaara-earth uppercase flex items-center gap-1 hover:text-essaara-gold transition-colors duration-300 group"
-        >
-          View All 
-          <span className="transform group-hover:translate-x-1 transition-transform duration-200">
-            →
-          </span>
-        </a>
-      </div>
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+        {products.map((product) => {
+          const isOutOfStock = product.stock === 0;
 
-      {/* RESPONSIVE GRID LAYOUT */}
-      {/* 2 columns on mobile, 3 on tablet, 4 on desktop screens */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-10">
-        {mockProducts.map((product) => (
-          <ProductCard 
-            key={product._id}
-            product={product}
-            onAddToCart={handleAddToCart}
-            onAddToWishlist={handleAddToWishlist}
-          />
-        ))}
+          return (
+            <div key={product.id} className="flex flex-col text-left group">
+              <div className="relative aspect-square w-full bg-[#FBFBFA] rounded-xs overflow-hidden border border-neutral-100 p-4">
+                <img src={product.productImages[0]} alt={product.name} className="w-full h-full object-contain mix-blend-multiply" />
+                
+                {/* Dynamically adjust visual controls based on stock data */}
+                <button 
+                  onClick={() => !isOutOfStock && addToCart(product.id, null)}
+                  disabled={isOutOfStock}
+                  className={`absolute bottom-3 left-3 right-3 border font-sans text-[10px] font-bold tracking-widest uppercase py-2 opacity-0 group-hover:opacity-100 transition-all duration-300 rounded-xs ${
+                    isOutOfStock
+                      ? 'bg-neutral-100 text-neutral-400 border-neutral-200 cursor-not-allowed opacity-100'
+                      : 'bg-white/90 text-black border-black hover:bg-black hover:text-white cursor-pointer'
+                  }`}
+                >
+                  {isOutOfStock ? 'Sold Out' : 'Add to Bag'}
+                </button>
+              </div>
+              
+              <h3 className="font-sans text-xs font-semibold mt-4 text-neutral-800 uppercase tracking-wider truncate">
+                {product.name}
+              </h3>
+              <p className="font-sans text-[11px] text-neutral-400 mt-0.5">{product.netWt}</p>
+              <p className="font-sans text-xs font-bold text-neutral-900 mt-2">
+                ₹{product.price.toLocaleString('en-IN')}.00
+              </p>
+            </div>
+          );
+        })}
       </div>
-
     </section>
   );
 };

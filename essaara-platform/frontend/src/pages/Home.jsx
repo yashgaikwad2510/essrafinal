@@ -2,6 +2,7 @@ import React from 'react';
 import BestsellerGrid from '../components/product/BestsellerGrid';
 import ShoppableVideos from '../components/home/ShoppableVideos';
 import VideoCtaBanner from '../components/home/VideoCtaBanner';
+import BlogFeatureRow from '../components/home/BlogFeatureRow';
 
 const Home = () => {
   return (
@@ -48,6 +49,9 @@ const Home = () => {
 
       {/* Shoppable Video Feeds Section */}
       <ShoppableVideos />
+
+      {/* Integrated Brand Story / Editorial Block */}
+      <BlogFeatureRow />
     </main>
   );
 };
