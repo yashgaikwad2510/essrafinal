@@ -6,6 +6,7 @@ import GiftingPage from './pages/GiftingPage';
 import CategoryPage from './pages/CategoryPage';
 import NewsletterAndStoreCTA from './components/home/NewsletterAndStoreCTA';
 import Footer from './components/common/Footer';
+import CartDrawer from './components/checkout/CartDrawer';
 import { AuthProvider } from './context/AuthContext';
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
       <Router>
         <div className="min-h-screen flex flex-col bg-[#FDFBF7]">
           <Navbar />
+          <CartDrawer />
           <div className="flex-grow pb-16">
             <Routes>
               <Route path="/" element={<Home />} />
