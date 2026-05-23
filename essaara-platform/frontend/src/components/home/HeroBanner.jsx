@@ -5,50 +5,66 @@ const HeroBanner = () => {
   const navigate = useNavigate();
 
   return (
-    <section className="w-full relative bg-neutral-900 overflow-hidden aspect-[16/5] min-h-[300px] flex items-center">
+    // Explicit widescreen mode matching image_bd6c8b.png
+    <section className="w-full relative bg-[#E1C9C3] overflow-hidden aspect-[21/9] min-h-[380px] sm:min-h-[440px] md:min-h-[500px] flex items-center">
       
       {/* =========================================================================
-          BACKGROUND LAYER: FROM YOUR SKETCH (Full-Bleed Background Image)
+          BACKGROUND LAYER: 100% BRIGHT & CRISP UNTOUCHED ARTWORK
           ========================================================================= */}
-      <div className="absolute inset-0 w-full h-full overflow-hidden">
+      <div className="absolute inset-0 w-full h-full select-none pointer-events-none">
         <img 
           src="/images/herobanner.png" 
-          alt="Essaara Luxurious Ayurveda"
-          className="w-full h-full object-cover object-center transform scale-100 transition-transform duration-[2000ms]"
+          alt="Essaara Botanical Illustration Background"
+          className="w-full h-full object-cover object-center"
         />
-        {/* Subtle gradient to ensure text readability without making the whole image dull */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/20 to-transparent" />
+        {/* NO dark overlays or dull vignettes here anymore—your artwork stays completely vibrant! */}
       </div>
 
       {/* =========================================================================
-          FOREGROUND CONTENT LAYER: FROM YOUR SKETCH (Left-Aligned Text Block)
+          FOREGROUND CONTENT LAYER: WITH ADVANCED TEXT SHADOW CONTRAST
           ========================================================================= */}
       <div className="w-full max-w-7xl mx-auto px-6 md:px-12 lg:px-16 relative z-10 text-left text-white animate-fadeIn">
-        <div className="max-w-xl flex flex-col items-start">
+        <div className="max-w-md md:max-w-lg flex flex-col items-start">
           
-          {/* Subtle sub-header tagline tracking */}
-          <span className="font-sans text-[10px] md:text-[11px] font-bold tracking-[0.35em] uppercase text-neutral-200/90 mb-4 drop-shadow-xs">
+          {/* Tagline with drop shadow */}
+          <span 
+            className="font-sans text-[10px] md:text-[11px] font-bold tracking-[0.35em] uppercase text-white mb-3"
+            style={{ textShadow: '1px 1px 4px rgba(0, 0, 0, 0.45)' }}
+          >
             Purely Ayurvedic • Naturally Divine
           </span>
 
-          {/* Headline matching the exact wording and styling in drawing */}
-          <h1 className="font-serif text-3xl md:text-5xl lg:text-6xl tracking-wide font-light leading-[1.15] drop-shadow-md uppercase">
-            Perfectfully hand <br />
-            <span className="font-sans font-bold text-2xl md:text-4xl lg:text-5xl tracking-[0.1em] block mt-1 text-white/95">
-              CRAFED.
+          {/* Headline with custom composite text-shadow for absolute legibility on light areas */}
+          <h1 
+            className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl tracking-wide font-light leading-[1.1] uppercase"
+            style={{ 
+              textShadow: `
+                1px 1px 3px rgba(0, 0, 0, 0.5), 
+                0px 0px 20px rgba(0, 0, 0, 0.35)
+              ` 
+            }}
+          >
+            Perfectfully <br />
+            hand <br />
+            <span className="font-serif font-normal block mt-1">
+              Crafed.
             </span>
           </h1>
 
-          <div className="w-12 h-[1px] bg-white/50 my-6" />
+          <div className="w-12 h-[1px] bg-white my-5 md:my-6 shadow-xs" />
 
-          <p className="font-sans text-xs md:text-sm text-neutral-200/95 leading-relaxed tracking-wide font-light max-w-md mb-8 drop-shadow-xs">
+          {/* Paragraph body copy with crisp drop shadow */}
+          <p 
+            className="font-sans text-xs md:text-sm text-white leading-relaxed tracking-wide font-normal max-w-sm md:max-w-md mb-6 md:mb-8"
+            style={{ textShadow: '1px 1px 5px rgba(0, 0, 0, 0.5)' }}
+          >
             Immerse your everyday spaces and skin sanctuary in time-tested formulations, mixed with small-batch patience and therapeutic focus.
           </p>
 
-          {/* Minimal Editorial Button Link */}
+          {/* Button with strong contrast alignment */}
           <button 
             onClick={() => navigate('/shop')}
-            className="font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase bg-white text-black hover:bg-transparent hover:text-white border border-white px-8 py-3.5 transition-all duration-300 rounded-xs shadow-md cursor-pointer flex items-center gap-3 group"
+            className="font-sans text-[10px] md:text-xs font-bold tracking-widest uppercase bg-white text-black hover:bg-neutral-900 hover:text-white border border-white px-6 md:px-8 py-3.5 transition-all duration-300 rounded-xs cursor-pointer flex items-center gap-3 group shadow-lg"
           >
             Explore Collection
             <span className="transform transition-transform duration-300 group-hover:translate-x-1">➔</span>
