@@ -1,34 +1,60 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { CartProvider } from './context/CartContext';
+
+// Global Layout Framework Shells
 import Navbar from './components/common/Navbar';
-import Home from './pages/Home';
-import GiftingPage from './pages/GiftingPage';
-import CategoryPage from './pages/CategoryPage';
-import NewsletterAndStoreCTA from './components/home/NewsletterAndStoreCTA';
+import CartDrawer from './components/cart/CartDrawer';
 import Footer from './components/common/Footer';
-import CartDrawer from './components/checkout/CartDrawer';
-import { AuthProvider } from './context/AuthContext';
+
+// Core Application Pages Layouts
+import HomePage from './pages/HomePage';
+import ShopPage from './pages/ShopPage';
+import ProductDetailsPage from './pages/ProductDetailsPage';
+import AboutPage from './pages/AboutPage';
+import ContactPage from './pages/ContactPage';
+import BlogPage from './pages/BlogPage';
+import FAQPage from './pages/FAQPage';
+import CheckoutPage from './pages/CheckoutPage';
+import WishlistPage from './pages/WishlistPage';
+import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
+import ShippingPolicyPage from './pages/ShippingPolicyPage';
 
 function App() {
   return (
-    <AuthProvider>
-      <Router>
-        <div className="min-h-screen flex flex-col bg-[#FDFBF7]">
-          <Navbar />
-          <CartDrawer />
-          <div className="flex-grow pb-16">
+    <CartProvider>
+      <BrowserRouter>
+        <div className="min-h-screen bg-[#FDFBF7] flex flex-col justify-between relative selection:bg-amber-100">
+          
+          <div>
+            {/* Global Sticky Navigation Header */}
+            <Navbar />
+
+            {/* Core Application Page Routing Tree Switchboard */}
             <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/category/gifting" element={<GiftingPage />} />
-              <Route path="/gifting" element={<GiftingPage />} />
-              <Route path="/category/:categoryId" element={<CategoryPage />} />
+              <Route path="/" element={<HomePage />} />
+              <Route path="/shop" element={<ShopPage />} />
+              <Route path="/product/:productId" element={<ProductDetailsPage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/contact" element={<ContactPage />} />
+              <Route path="/blog" element={<BlogPage />} />
+              <Route path="/faq" element={<FAQPage />} />
+              <Route path="/cart-checkout" element={<CheckoutPage />} />
+              <Route path="/wishlist" element={<WishlistPage />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+              <Route path="/shipping-policy" element={<ShippingPolicyPage />} />
             </Routes>
           </div>
-          <NewsletterAndStoreCTA />
+
+          {/* Global Slide-Over Utility Drawers */}
+          <CartDrawer />
+
+          {/* Global Botanical-Accent Footer Component */}
           <Footer />
+          
         </div>
-      </Router>
-    </AuthProvider>
+      </BrowserRouter>
+    </CartProvider>
   );
 }
 
