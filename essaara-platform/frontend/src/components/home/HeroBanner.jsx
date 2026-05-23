@@ -12,7 +12,7 @@ const HeroBanner = () => {
           ========================================================================= */}
       <div className="absolute inset-0 w-full h-full">
         <img 
-          src="/assets/banner-woman.jpg" // Put your woman background asset exactly here!
+          src="/images/wommen.jpg" // Put your woman background asset exactly here!
           alt="Essaara Luxurious Ayurveda"
           className="w-full h-full object-cover object-center transform scale-100 transition-transform duration-[2000ms]"
         />
