@@ -10,15 +10,14 @@ const HeroBanner = () => {
       {/* =========================================================================
           BACKGROUND LAYER: FROM YOUR SKETCH (Full-Bleed Background Image)
           ========================================================================= */}
-      <div className="absolute inset-0 w-full h-full">
+      <div className="absolute inset-0 w-full h-full overflow-hidden">
         <img 
           src="/images/women.jpg" // Put your woman background asset exactly here!
           alt="Essaara Luxurious Ayurveda"
-          className="w-full h-full object-cover object-center transform scale-100 transition-transform duration-[2000ms]"
+          className="w-full h-full object-cover object-center transform scale-[1.3] transition-transform duration-[2000ms]"
         />
-        {/* Elegant subtle dark vignette overlay to make the white text readable anywhere */}
-        <div className="absolute inset-0 bg-black/25 mix-blend-multiply" />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-black/10 to-transparent" />
+        {/* Subtle gradient to ensure text readability without making the whole image dull */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/20 to-transparent" />
       </div>
 
       {/* =========================================================================
