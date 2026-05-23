@@ -12,7 +12,7 @@ const HeroBanner = () => {
           ========================================================================= */}
       <div className="absolute inset-0 w-full h-full overflow-hidden">
         <img 
-          src="/images/hero-16-5.png" 
+          src="/images/herobanner.png" 
           alt="Essaara Luxurious Ayurveda"
           className="w-full h-full object-cover object-center transform scale-100 transition-transform duration-[2000ms]"
         />
