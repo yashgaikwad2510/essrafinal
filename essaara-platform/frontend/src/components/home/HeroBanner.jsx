@@ -5,16 +5,16 @@ const HeroBanner = () => {
   const navigate = useNavigate();
 
   return (
-    <section className="w-full relative bg-neutral-900 overflow-hidden min-h-[420px] md:h-[500px] lg:h-[550px] flex items-center">
+    <section className="w-full relative bg-neutral-900 overflow-hidden aspect-[16/5] min-h-[300px] flex items-center">
       
       {/* =========================================================================
           BACKGROUND LAYER: FROM YOUR SKETCH (Full-Bleed Background Image)
           ========================================================================= */}
       <div className="absolute inset-0 w-full h-full overflow-hidden">
         <img 
-          src="/images/women.jpg" // Put your woman background asset exactly here!
+          src="/images/hero-16-5.png" 
           alt="Essaara Luxurious Ayurveda"
-          className="w-full h-full object-cover object-center transform scale-[1.3] transition-transform duration-[2000ms]"
+          className="w-full h-full object-cover object-center transform scale-100 transition-transform duration-[2000ms]"
         />
         {/* Subtle gradient to ensure text readability without making the whole image dull */}
         <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/20 to-transparent" />
