@@ -5,11 +5,11 @@ const HeroBanner = () => {
   const navigate = useNavigate();
 
   return (
-    // Hard locking to the exact sleek 16:5 cinematic aspect ratio
+    // Hard locked to your 16:5 sleek cinematic ratio
     <section className="w-full relative bg-[#E1C9C3] overflow-hidden aspect-[16/5] min-h-[350px] md:min-h-[420px] flex items-center text-left">
       
       {/* =========================================================================
-          BACKGROUND LAYER: FULL-BLEED ARTWORK WITH FLUSH GRADIENT MASKING
+          BACKGROUND LAYER: 100% UNTOUCHED, RADIANT ARTWORK FROM EDGE TO EDGE
           ========================================================================= */}
       <div className="absolute inset-0 w-full h-full select-none pointer-events-none">
         <img 
@@ -17,27 +17,27 @@ const HeroBanner = () => {
           alt="Essaara Botanical Illustration Background"
           className="w-full h-full object-cover object-center"
         />
-        
-        {/* 
-          This smooth gradient matches the exact background tone of your artwork. 
-          It beautifully blends the image on the left into a clean, solid color for the text 
-          while keeping the right side completely clear, bright, and pristine.
-        */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#E1C9C3] via-[#E1C9C3]/80 via-[#E1C9C3]/20 to-transparent w-full h-full" />
+        {/* Absolutely zero color-washing or dark overlays. Your image stays fully vibrant! */}
       </div>
 
       {/* =========================================================================
-          FOREGROUND CONTENT LAYER: CRISP DARK TYPOGRAPHY
+          FOREGROUND CONTENT LAYER: PREMIUM TRANSLUCENT GLASS CANVASES
           ========================================================================= */}
-      <div className="w-full max-w-7xl mx-auto px-6 md:px-12 lg:px-16 relative z-10 text-neutral-900 animate-fadeIn">
-        <div className="max-w-xs sm:max-w-md md:max-w-lg flex flex-col items-start">
+      <div className="w-full max-w-7xl mx-auto px-6 md:px-12 lg:px-16 relative z-10 animate-fadeIn">
+        
+        {/* 
+          THE GLASS CARD: 
+          Uses a soft white backdrop-filter blur. It acts like a high-end luxury pane of glass, 
+          letting the rich colors of the flowers shine through while isolating the dark text beautifully.
+        */}
+        <div className="max-w-xs sm:max-w-md md:max-w-lg bg-white/40 backdrop-blur-md p-6 md:p-8 rounded-xs border border-white/30 shadow-xl flex flex-col items-start">
           
-          {/* Elegant Tracking Tagline */}
-          <span className="font-sans text-[10px] md:text-[11px] font-bold tracking-[0.35em] uppercase text-amber-900/90 mb-3">
+          {/* Tracking Tagline */}
+          <span className="font-sans text-[10px] md:text-[11px] font-bold tracking-[0.35em] uppercase text-amber-900 mb-3">
             Purely Ayurvedic • Naturally Divine
           </span>
 
-          {/* Perfect Wording and Casing from your layout blueprint */}
+          {/* Core Typography */}
           <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl tracking-wide font-light leading-[1.1] uppercase text-neutral-950">
             Perfectfully <br />
             hand <br />
@@ -46,9 +46,9 @@ const HeroBanner = () => {
             </span>
           </h1>
 
-          <div className="w-12 h-[1px] bg-amber-900/30 my-5" />
+          <div className="w-12 h-[1px] bg-amber-900/40 my-4 md:my-5" />
 
-          <p className="font-sans text-xs md:text-sm text-neutral-700 leading-relaxed tracking-wide font-light max-w-xs md:max-w-sm mb-7">
+          <p className="font-sans text-xs md:text-sm text-neutral-800 leading-relaxed tracking-wide font-normal max-w-xs md:max-w-sm mb-6">
             Immerse your everyday spaces and skin sanctuary in time-tested formulations, mixed with small-batch patience and therapeutic focus.
           </p>
 
