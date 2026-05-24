@@ -6,8 +6,6 @@ const HeroBanner = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const slides = [
-    { id: 1, image: "/images/banner-woman.png" },
-    { id: 2, image: "/images/banner-candles.png" },
     { id: 3, image: "/images/banner-botanicals.png" },
     { id: 4, image: "/images/bathbombnner.png" },
     { id: 5, image: "/images/wommenbanner.png" }
