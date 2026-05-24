@@ -20,7 +20,7 @@ export const essaaraProducts = [
     ],
     otherInfo: "Tip: Keep the soap in a dry place after use to preserve its natural essence. Storage: Store in a cool, dry place away from direct sunlight. Avoid contact with eyes. For external use.[cite: 1]",
     expiry: "3 years from manufacturing date[cite: 1]",
-    productImages: ["/assets/products/handmade-gold-soap.png"],
+    productImages: ["/images/sope.png"],
     stock: 25
   },
   {
@@ -40,7 +40,7 @@ export const essaaraProducts = [
     ],
     otherInfo: "Spiritual & Emotional Benefits: Promotes mental peace and positivity. Ideal for daily puja, meditation, yoga, and relaxation rituals. Encourages the idea of giving back to nature — one candle, one tree. Adds a sacred, calming glow to homes, offices, and healing spaces.[cite: 1]",
     expiry: "3 years from manufacturing date[cite: 1]",
-    productImages: ["/assets/products/dragonfly-signature-candle.png"],
+    productImages: ["/images/candel.png"],
     stock: 14
   },
   {
@@ -58,7 +58,7 @@ export const essaaraProducts = [
     ],
     otherInfo: "Long lasting natural scent profile.[cite: 1]",
     expiry: "3 years from manufacturing date[cite: 1]",
-    productImages: ["/assets/products/signature-perfume-oil-10ml.png"],
+    productImages: ["/images/perfume.png"],
     stock: 40
   },
   {
@@ -79,7 +79,7 @@ export const essaaraProducts = [
     ],
     otherInfo: "100% Herbal & Chemical-Free. No Paraben, No Sulphate, No Preservatives. Deep Cleansing + Gentle Exfoliation. Suitable for All Skin Types. Enhances Natural Skin Glow.[cite: 1]",
     expiry: "1 year from manufacturing date[cite: 1]",
-    productImages: ["/assets/products/body-scrub-neem.png"],
+    productImages: ["/images/bathscrb.png"],
     stock: 50
   },
   {
@@ -94,7 +94,7 @@ export const essaaraProducts = [
     howToUse: ["Dab smoothly onto wrists and warm pulse areas to diffuse the scent context smoothly.[cite: 1]"],
     otherInfo: "Purely ayurvedic | Naturally divine | Made in India[cite: 1]",
     expiry: "3 years from manufacturing date[cite: 1]",
-    productImages: ["/assets/products/small-rollon-perfume.png"],
+    productImages: ["/images/wailflower.png"],
     stock: 120
   }
 ];
