@@ -37,11 +37,11 @@ const ProductDetailsPage = () => {
             LEFT ROW SYSTEM: MEDIA SHOWCASE PANEL
             ========================================================================= */}
         <div className="w-full flex flex-col gap-4">
-          <div className="w-full aspect-square bg-[#FBFBFA] border border-neutral-100 rounded-xs overflow-hidden p-8 flex items-center justify-center group">
+          <div className="w-full aspect-square bg-[#FAF9F6] border border-neutral-100 rounded-xl overflow-hidden p-8 flex items-center justify-center group">
             <img 
               src={product.productImages[0]} 
               alt={product.name} 
-              className="max-h-full max-w-full object-contain mix-blend-multiply transform transition-transform duration-500 group-hover:scale-102"
+              className="max-h-full max-w-full object-contain mix-blend-multiply transform transition-transform duration-500 group-hover:scale-102 rounded-xl"
             />
           </div>
           

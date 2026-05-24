@@ -1,9 +1,23 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 
 const VideoCtaBanner = () => {
   const videoRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(true);
   const [isMuted, setIsMuted] = useState(true);
+
+  // Autoplay insurance on mount to satisfy modern browser policies
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.muted = true;
+      setIsMuted(true);
+      videoRef.current.play()
+        .then(() => setIsPlaying(true))
+        .catch(error => {
+          console.log("Autoplay blocked by browser, waiting for user interaction:", error);
+          setIsPlaying(false);
+        });
+    }
+  }, []);
 
   const togglePlayback = () => {
     if (isPlaying) {
@@ -38,10 +52,15 @@ const VideoCtaBanner = () => {
         <video
           ref={videoRef}
           src="https://assets.mixkit.co/videos/preview/mixkit-woman-enjoying-a-cup-of-tea-in-nature-43004-large.mp4" // Placeholder luxury wellness clip
-          autoPlay
-          loop
+          autoPlay={true}
+          loop={true}
           muted={isMuted}
-          playsInline
+          playsInline={true}
+          onEnded={() => {
+            if (videoRef.current) {
+              videoRef.current.play().catch(err => console.log("Video loop play error:", err));
+            }
+          }}
           className="w-full h-full object-cover opacity-80 transition-transform duration-1000 group-hover:scale-101"
         />
 

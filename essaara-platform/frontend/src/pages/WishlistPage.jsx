@@ -56,7 +56,7 @@ const WishlistPage = () => {
           const isOutOfStock = product.stock === 0;
 
           return (
-            <div key={product.id} className="bg-white border border-neutral-200/60 rounded-xs p-4 flex flex-col justify-between group transition-all hover:shadow-md relative">
+            <div key={product.id} className="bg-white border border-neutral-200/60 rounded-2xl p-5 flex flex-col justify-between group transition-all hover:shadow-md relative">
               
               {/* Absoluted Position Close/Remove cross button */}
               <button 
@@ -71,13 +71,13 @@ const WishlistPage = () => {
 
               {/* Visual Thumbnail Window Box */}
               <div 
-                className="w-full aspect-square flex items-center justify-center p-2 mb-4 bg-[#FBFBFA] rounded-xs cursor-pointer overflow-hidden"
+                className="w-full aspect-square flex items-center justify-center p-6 mb-4 bg-[#FAF9F6] rounded-xl cursor-pointer overflow-hidden relative"
                 onClick={() => navigate(`/product/${product.id}`)}
               >
                 <img 
                   src={product.productImages[0]} 
                   alt={product.name} 
-                  className="max-h-full max-w-full object-contain mix-blend-multiply transform transition-transform duration-500 group-hover:scale-102"
+                  className="max-h-full max-w-full object-contain mix-blend-multiply transform transition-transform duration-500 group-hover:scale-105 rounded-xl"
                 />
               </div>
 
@@ -107,10 +107,10 @@ const WishlistPage = () => {
               <button
                 onClick={() => !isOutOfStock && handleMoveToCart(product.id)}
                 disabled={isOutOfStock}
-                className={`w-full mt-4 font-sans text-[10px] font-bold uppercase tracking-widest py-2.5 transition-colors duration-300 rounded-xs border ${
+                className={`w-full mt-4 font-sans text-[10px] font-bold uppercase tracking-widest py-2.5 transition-colors duration-300 rounded-lg border border-none ${
                   isOutOfStock
                     ? 'bg-neutral-100 text-neutral-400 border-neutral-200 cursor-not-allowed text-center'
-                    : 'bg-black text-white border-black hover:bg-essaara-earth hover:border-essaara-earth cursor-pointer'
+                    : 'bg-black text-white hover:bg-essaara-earth cursor-pointer'
                 }`}
               >
                 {isOutOfStock ? 'Sold Out' : 'Move to Bag'}

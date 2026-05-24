@@ -81,20 +81,5 @@ export const essaaraProducts = [
     expiry: "1 year from manufacturing date[cite: 1]",
     productImages: ["/images/bathscrb.png"],
     stock: 50
-  },
-  {
-    id: "ess-perfume-rollon",
-    name: "Small Roll-On Perfume Oil (Single)",
-    tagline: "Royal Grace Perfume Oil[cite: 1]",
-    category: "fragrance",
-    subCategory: "Body Mists",
-    price: 150, // Single vial breakdown pricing metric[cite: 1]
-    netWt: "Small Tester Size[cite: 1]",
-    ingredients: ["Prajakta Flower", "Essential oils", "Natural fixatives", "Purified water"], // Target core fragrance botanical mapping[cite: 1]
-    howToUse: ["Dab smoothly onto wrists and warm pulse areas to diffuse the scent context smoothly.[cite: 1]"],
-    otherInfo: "Purely ayurvedic | Naturally divine | Made in India[cite: 1]",
-    expiry: "3 years from manufacturing date[cite: 1]",
-    productImages: ["/images/wailflower.png"],
-    stock: 120
   }
 ];

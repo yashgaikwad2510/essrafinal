@@ -20,6 +20,15 @@ export default {
       },
       letterSpacing: {
         widest: '.2em',                  // Crucial for navigation links and sub-headers
+      },
+      animation: {
+        'marquee-right': 'marquee-right 25s linear infinite',
+      },
+      keyframes: {
+        'marquee-right': {
+          '0%': { transform: 'translateX(-50%)' },
+          '100%': { transform: 'translateX(0%)' },
+        }
       }
     },
   },

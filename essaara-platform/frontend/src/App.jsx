@@ -6,6 +6,8 @@ import { CartProvider } from './context/CartContext';
 import Navbar from './components/common/Navbar';
 import CartDrawer from './components/cart/CartDrawer';
 import Footer from './components/common/Footer';
+import FloatingReel from './components/shared/FloatingReel';
+import AnnouncementBar from './components/shared/AnnouncementBar';
 
 // Core Application Pages Layouts
 import HomePage from './pages/HomePage';
@@ -27,6 +29,9 @@ function App() {
         <div className="min-h-screen bg-[#FDFBF7] flex flex-col justify-between relative selection:bg-amber-100">
           
           <div>
+            {/* Announcement Offer Bar Ticker */}
+            <AnnouncementBar />
+
             {/* Global Sticky Navigation Header */}
             <Navbar />
 
@@ -51,6 +56,9 @@ function App() {
 
           {/* Global Botanical-Accent Footer Component */}
           <Footer />
+
+          {/* Shoppable Reel Video PIP widget */}
+          <FloatingReel />
           
         </div>
       </BrowserRouter>
