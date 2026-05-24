@@ -7,7 +7,8 @@ const HeroBanner = () => {
 
   const slides = [
     { id: 4, image: "/images/bathbombnner.png" },
-    { id: 5, image: "/images/wommenbanner.png" }
+    { id: 5, image: "/images/wommenbanner.png" },
+    { id: 6, image: "/images/goldsoap-banner.png" }
   ];
 
   // Auto-rotate timeline cycling through slides every 5 seconds
