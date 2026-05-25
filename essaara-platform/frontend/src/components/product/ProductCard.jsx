@@ -1,47 +1,56 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const ProductCard = ({ product, onAddToWishlist, onAddToCart }) => {
-  // Destructure product data matching our asset sheets and schemas
   const { 
+    _id,
+    id,
     name, 
-    subTitle,      // e.g., "Quick-absorbing, Moisturizing"
-    variants,      // Array of objects: [{ size: '100g', price: 1645 }, { size: '200g', price: 2850 }]
-    rating,        // e.g., 4.8
-    reviewCount,   // e.g., 164
-    images,        // Array of image URLs
+    subTitle,
+    netWt,
+    price,
+    rating,
+    reviewCount,
+    productImages,
     isBestseller,
-    awardBadge     // e.g., 'Elle Beauty Awards'
+    awardBadge,
+    stock
   } = product;
 
-  // Local state to track the user's selected variant
-  const [selectedVariant, setSelectedVariant] = useState(variants[0]);
+  const productId = id || _id;
+  const imagesToUse = productImages || product.images || [];
+  const priceToUse = price || (product.variants && product.variants[0] ? product.variants[0].price : 0);
+
   const [isWishlisted, setIsWishlisted] = useState(false);
 
-  const handleVariantChange = (e) => {
-    const variant = variants.find(v => v.size === e.target.value);
-    if (variant) setSelectedVariant(variant);
+  const handleWishlistToggle = (e) => {
+    e.preventDefault(); 
+    e.stopPropagation();
+    setIsWishlisted(!isWishlisted);
+    if (onAddToWishlist) onAddToWishlist(productId);
   };
 
-  const handleWishlistToggle = () => {
-    setIsWishlisted(!isWishlisted);
-    if (onAddToWishlist) onAddToWishlist(product._id);
+  const handleAddToCartClick = (e) => {
+    e.preventDefault(); 
+    e.stopPropagation();
+    if (stock !== 0) {
+      onAddToCart(productId, null);
+    }
   };
 
   return (
-    <div className="group relative flex flex-col w-full bg-white transition-all duration-300 border border-neutral-200/60 p-5 rounded-2xl hover:shadow-md shadow-xs h-full justify-between">
+    <Link to={`/product/${productId}`} className="group relative flex flex-col w-full bg-white transition-all duration-300 border border-neutral-200/60 p-5 rounded-2xl hover:shadow-md shadow-xs h-full justify-between cursor-pointer">
       
       <div>
         {/* 1. IMAGE CANVAS & OVERLAY BADGES */}
         <div className="relative aspect-square w-full bg-[#FAF9F6] flex items-center justify-center p-6 overflow-hidden rounded-xl mb-4">
-          {/* Product Image */}
           <img 
-            src={images[0]} 
+            src={imagesToUse[0]} 
             alt={name} 
             className="max-h-full max-w-full object-contain mix-blend-multiply transform group-hover:scale-105 transition-transform duration-500 ease-out rounded-xl"
           />
 
-          {/* Top-Left Dynamic Badges */}
-          <div className="absolute top-3 left-3 flex flex-col gap-1.5 items-start">
+          <div className="absolute top-3 left-3 flex flex-col gap-1.5 items-start z-10">
             {isBestseller && (
               <span className="bg-[#333333] text-white text-[10px] font-sans font-bold tracking-wider px-2 py-0.5 uppercase shadow-sm rounded-sm">
                 Best Seller
@@ -54,10 +63,9 @@ const ProductCard = ({ product, onAddToWishlist, onAddToCart }) => {
             )}
           </div>
 
-          {/* Bottom-Right Wishlist Heart */}
           <button 
             onClick={handleWishlistToggle}
-            className="absolute bottom-3 right-3 p-1.5 rounded-full bg-white/80 hover:bg-white text-neutral-800 shadow-xs transition-colors duration-200 cursor-pointer"
+            className="absolute bottom-3 right-3 p-1.5 rounded-full bg-white/80 hover:bg-white text-neutral-800 shadow-xs transition-colors duration-200 cursor-pointer z-10"
             aria-label="Add to Wishlist"
           >
             <svg 
@@ -76,69 +84,57 @@ const ProductCard = ({ product, onAddToWishlist, onAddToCart }) => {
         {/* 2. INFORMATION HIERARCHY BLOCK */}
         <div className="flex flex-col pt-2 pb-2 px-1 text-left">
           
-          {/* Social Proof (Stars + Count) */}
           <div className="flex items-center gap-1 mb-2">
             <div className="flex text-amber-500 text-xs">
               {Array.from({ length: 5 }).map((_, i) => (
                 <span key={i}>★</span>
               ))}
             </div>
-            <span className="text-[11px] font-sans text-neutral-400">({reviewCount})</span>
+            {reviewCount !== undefined && (
+              <span className="text-[11px] font-sans text-neutral-400">({reviewCount})</span>
+            )}
           </div>
 
-          {/* Product Identity Typography */}
           <h3 className="font-sans text-xs font-semibold tracking-wide text-essaara-earth uppercase line-clamp-2 min-h-[32px]">
             {name}
           </h3>
           
-          {/* Subtitle / Key Benefit */}
           <p className="font-sans text-[11px] text-neutral-500 mt-1 italic truncate">
             {subTitle}
           </p>
 
-          {/* Variant Info Alert */}
-          <p className="font-sans text-[11px] text-neutral-400 mt-1">
-            {variants.length} Sizes Available
-          </p>
+          {netWt ? (
+            <p className="font-sans text-[11px] text-neutral-400 mt-1">
+              Net Wt: {netWt}
+            </p>
+          ) : (
+            <p className="font-sans text-[11px] text-neutral-400 mt-1">
+              &nbsp;
+            </p>
+          )}
 
-          {/* Live Formatted Price */}
           <p className="font-sans text-xs font-bold text-essaara-earth mt-2">
-            ₹{selectedVariant.price.toLocaleString('en-IN')}.00
+            ₹{priceToUse.toLocaleString('en-IN')}.00
           </p>
         </div>
       </div>
 
-      {/* 3. INTERACTIVE DROPDOWN SELECT CTA */}
-      <div className="pt-2">
-        <div className="relative border border-essaara-earth rounded-lg overflow-hidden">
-          <select 
-            value={selectedVariant.size}
-            onChange={handleVariantChange}
-            className="w-full bg-white text-essaara-earth font-sans text-[11px] font-medium uppercase tracking-wider py-2.5 px-4 pr-10 appearance-none cursor-pointer focus:outline-hidden border-none"
-          >
-            {variants.map((v) => (
-              <option key={v.size} value={v.size}>
-                Select Size: {v.size}
-              </option>
-            ))}
-          </select>
-          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-essaara-earth">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-3 h-3">
-              <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-            </svg>
-          </div>
-        </div>
-
-        {/* Optional Action Execution Button */}
+      {/* 3. INTERACTIVE CTA */}
+      <div className="pt-2 z-10">
         <button 
-          onClick={() => onAddToCart(product._id, selectedVariant)}
-          className="w-full mt-2 bg-essaara-earth text-white font-sans text-[11px] font-medium uppercase tracking-widest py-2.5 transition-colors duration-300 hover:bg-essaara-gold cursor-pointer border-none rounded-lg"
+          onClick={handleAddToCartClick}
+          disabled={stock === 0}
+          className={`w-full mt-2 font-sans text-[11px] font-medium uppercase tracking-widest py-2.5 transition-colors duration-300 border-none rounded-lg ${
+            stock === 0 
+              ? 'bg-neutral-300 text-neutral-500 cursor-not-allowed' 
+              : 'bg-essaara-earth text-white hover:bg-essaara-gold cursor-pointer'
+          }`}
         >
-          Add to Bag
+          {stock === 0 ? 'Out of Stock' : 'Add to Bag'}
         </button>
       </div>
 
-    </div>
+    </Link>
   );
 };
 

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const ESSAARA_PRODUCTS = [
   {
@@ -153,28 +154,32 @@ const ShopPage = () => {
                   </button>
 
                   {product.image ? (
-                    <img 
-                      src={product.image} 
-                      alt={product.name} 
-                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 hover:scale-105" 
-                    />
+                    <Link to={`/product/${product.id}`} className="absolute inset-0 w-full h-full z-10">
+                      <img 
+                        src={product.image} 
+                        alt={product.name} 
+                        className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" 
+                      />
+                    </Link>
                   ) : (
                     /* Placeholder Art Monogram Layer */
-                    <div className="absolute inset-0 flex flex-col items-center justify-center p-4 text-center select-none bg-gradient-to-br from-neutral-50 to-[#FAF7F2]">
+                    <Link to={`/product/${product.id}`} className="absolute inset-0 flex flex-col items-center justify-center p-4 text-center select-none bg-gradient-to-br from-neutral-50 to-[#FAF7F2] z-10 hover:text-black">
                       <span className="font-serif text-4xl font-extralight text-neutral-200/80 tracking-widest">
                         E
                       </span>
                       <p className="text-[9px] font-sans uppercase tracking-widest text-neutral-400/80 max-w-[85%] mt-2 leading-relaxed">
                         {product.name}
                       </p>
-                    </div>
+                    </Link>
                   )}
                 </div>
 
                 {/* PRODUCT TITLE - UPPERCASE WITH TRUNCATION */}
-                <h3 className="font-sans text-xs font-bold uppercase tracking-wider text-neutral-900 truncate mb-1">
-                  {product.name}
-                </h3>
+                <Link to={`/product/${product.id}`} className="no-underline text-neutral-900 hover:text-black block mb-1">
+                  <h3 className="font-sans text-xs font-bold uppercase tracking-wider truncate">
+                    {product.name}
+                  </h3>
+                </Link>
 
                 {/* TAGLINE OVERLAY - LIGHT GREY UPPERCASE */}
                 <p className="font-sans text-[10px] text-neutral-400 uppercase tracking-wide font-normal truncate mb-4">
@@ -192,7 +197,7 @@ const ShopPage = () => {
                 </div>
 
                 {/* FULL-WIDTH ANCHORED ACTION BUTTON */}
-                <button className="w-full bg-black text-white text-[10px] font-bold uppercase tracking-[0.2em] py-3.5 hover:bg-neutral-900 rounded-lg transition-colors shadow-sm cursor-pointer border-none mt-auto">
+                <button className="w-full bg-black text-white text-[10px] font-bold uppercase tracking-[0.2em] py-3.5 hover:bg-neutral-900 rounded-lg transition-colors shadow-sm cursor-pointer border-none mt-auto z-20 relative">
                   Move To Bag
                 </button>
 
