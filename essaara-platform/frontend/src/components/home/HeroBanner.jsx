@@ -36,7 +36,7 @@ const HeroBanner = () => {
       OUTER FRAMING CONTAINER:
       px-[6px] handles your exact 5px-6px side margins flawlessly.
     */
-    <div className="w-full bg-white px-[6px] pt-2 pb-4 max-w-[1440px] mx-auto select-none">
+    <div className="w-full bg-white select-none">
       
       {/* 
         THE HOLE BANNER BUTTON:
@@ -45,7 +45,7 @@ const HeroBanner = () => {
       */}
       <button 
         onClick={() => navigate('/shop')}
-        className="w-full relative bg-[#E1C9C3] overflow-hidden rounded-2xl aspect-[16/5] min-h-[350px] md:min-h-[420px] block border-none p-0 cursor-pointer group shadow-xs hover:shadow-md transition-shadow duration-300"
+        className="w-full relative bg-[#E1C9C3] overflow-hidden aspect-[16/5] min-h-[350px] md:min-h-[420px] block border-none p-0 cursor-pointer group shadow-xs hover:shadow-md transition-shadow duration-300"
         aria-label="Explore the Essaara Collection"
       >
         
