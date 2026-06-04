@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 
 const ProductDetailsPage = () => {
@@ -11,7 +11,8 @@ const ProductDetailsPage = () => {
   const product = products.find((p) => p.id === productId);
 
   // Active accordion tab state tracking
-  const [activeTab, setActiveTab] = useState('ingredients');
+  const [activeTab, setActiveTab] = useState(null);
+  const [quantity, setQuantity] = useState(1);
 
   // Fallback protection if user refreshes on an invalid product ID
   if (!product) {
@@ -27,165 +28,237 @@ const ProductDetailsPage = () => {
 
   const isOutOfStock = product.stock === 0;
 
+  const toggleAccordion = (tab) => {
+    setActiveTab(activeTab === tab ? null : tab);
+  };
+
+  const handleQuantityChange = (delta) => {
+    const newQuantity = quantity + delta;
+    if (newQuantity >= 1 && newQuantity <= product.stock) {
+      setQuantity(newQuantity);
+    }
+  };
+
+  const handleAddToCart = () => {
+    if (!isOutOfStock) {
+      for (let i = 0; i < quantity; i++) {
+        addToCart(product.id, null);
+      }
+    }
+  };
+
   return (
-    <main className="w-full bg-white min-h-screen py-12 px-6 md:px-12 lg:px-16 max-w-7xl mx-auto animate-fadeIn">
+    <main className="w-full bg-[#FDFBF7] min-h-screen">
       
-      {/* TWO-COLUMN MASTER BREADCRUMB GRID */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start text-left">
-        
-        {/* =========================================================================
-            LEFT ROW SYSTEM: MEDIA SHOWCASE PANEL
-            ========================================================================= */}
-        <div className="w-full flex flex-col gap-4">
-          <div className="w-full aspect-square bg-[#FAF9F6] border border-neutral-100 rounded-xl overflow-hidden p-8 flex items-center justify-center group">
-            <img 
-              src={product.productImages[0]} 
-              alt={product.name} 
-              className="max-h-full max-w-full object-contain mix-blend-multiply transform transition-transform duration-500 group-hover:scale-102 rounded-xl"
-            />
-          </div>
+      {/* Breadcrumb Navigation */}
+      <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-16 pt-8 pb-4">
+        <nav className="flex items-center gap-2 text-xs font-sans text-neutral-500">
+          <Link to="/" className="hover:text-neutral-800 transition-colors">Home</Link>
+          <span>/</span>
+          <Link to="/shop" className="hover:text-neutral-800 transition-colors">Shop</Link>
+          <span>/</span>
+          <span className="text-neutral-800">{product.name}</span>
+        </nav>
+      </div>
+
+      {/* TWO-COLUMN MASTER PRODUCT GRID */}
+      <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-16 pb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-start">
           
-          {/* Quality Indicator Badges matching common labeling data */}
-          <div className="grid grid-cols-3 gap-2 text-center py-2 border-y border-neutral-100 bg-[#FAF9F6]">
-            <div className="flex flex-col py-1">
-              <span className="font-sans text-[9px] uppercase tracking-widest font-bold text-neutral-800">Purely Ayurvedic</span>
+          {/* =========================================================================
+              LEFT COLUMN: PRODUCT IMAGE
+              ========================================================================= */}
+          <div className="w-full">
+            <div className="w-full aspect-square bg-white rounded-lg overflow-hidden flex items-center justify-center sticky top-24">
+              <img 
+                src={product.productImages[0]} 
+                alt={product.name} 
+                className="w-full h-full object-cover"
+              />
             </div>
-            <div className="flex flex-col py-1 border-x border-neutral-200/60">
-              <span className="font-sans text-[9px] uppercase tracking-widest font-bold text-neutral-800">Naturally Divine</span>
-            </div>
-            <div className="flex flex-col py-1">
-              <span className="font-sans text-[9px] uppercase tracking-widest font-bold text-neutral-800">Made In India</span>
-            </div>
-          </div>
-        </div>
-
-        {/* =========================================================================
-            RIGHT ROW SYSTEM: PRODUCT SPECS & ACTION CONTROLS
-            ========================================================================= */}
-        <div className="flex flex-col h-full justify-start pt-2">
-          
-          {/* Sub-category tracking marker */}
-          <span className="font-sans text-[10px] uppercase tracking-[0.25em] font-bold text-amber-800 mb-2">
-            {product.subCategory}
-          </span>
-
-          <h1 className="font-serif text-2xl md:text-3xl lg:text-4xl text-neutral-900 uppercase tracking-wider font-light mb-2 leading-tight">
-            {product.name}
-          </h1>
-
-          <p className="font-sans text-xs md:text-sm text-neutral-500 italic font-light tracking-wide mb-6 border-b border-neutral-50 pb-4 leading-relaxed">
-            "{product.tagline}"
-          </p>
-
-          <div className="flex items-baseline gap-4 mb-6">
-            <span className="font-sans text-xl font-bold text-neutral-900">
-              ₹{product.price.toLocaleString('en-IN')}.00 Packs
-            </span>
-            <span className="text-xs font-sans text-neutral-400 uppercase tracking-widest font-medium">
-              | Net Wt: {product.netWt}
-            </span>
-          </div>
-
-          {/* MASTER ACTIONS PURCHASE CONTAINER */}
-          <div className="mb-10 w-full">
-            <button
-              onClick={() => !isOutOfStock && addToCart(product.id, null)}
-              disabled={isOutOfStock}
-              className={`w-full font-sans text-xs font-bold uppercase tracking-widest py-4 transition-all duration-300 rounded-xs border shadow-xs ${
-                isOutOfStock
-                  ? 'bg-neutral-100 text-neutral-400 border-neutral-200 cursor-not-allowed text-center'
-                  : 'bg-black text-white hover:bg-essaara-earth border-black hover:border-essaara-earth cursor-pointer'
-              }`}
-            >
-              {isOutOfStock ? 'Sold Out' : 'Add to Bag'}
-            </button>
-            
-            {/* Quick stock warning indicator */}
-            {!isOutOfStock && product.stock <= 15 && (
-              <p className="text-[11px] font-sans text-amber-700 mt-2.5 font-medium tracking-wide">
-                ⚠️ Low Stock Alert: Only {product.stock} units remaining in our ritual vault.
-              </p>
-            )}
           </div>
 
           {/* =========================================================================
-              TAB ACCORDION COMPONENT SYSTEM (Unpacks Document Meta Specs)
+              RIGHT COLUMN: PRODUCT INFORMATION & PURCHASE
               ========================================================================= */}
-          <div className="w-full flex flex-col border border-neutral-200/70 rounded-xs overflow-hidden bg-white">
+          <div className="flex flex-col">
             
-            {/* Tab Header Selector Buttons Grid */}
-            <div className="grid grid-cols-3 bg-[#FAF9F6] border-b border-neutral-200/70 text-center">
-              <button 
-                onClick={() => setActiveTab('ingredients')}
-                className={`py-3.5 font-sans text-[10px] md:text-xs uppercase tracking-widest font-bold border-b-2 transition-all cursor-pointer ${
-                  activeTab === 'ingredients' ? 'border-black text-black bg-white' : 'border-transparent text-neutral-400 hover:text-neutral-700'
-                }`}
+            {/* Category Badge */}
+            <div className="mb-3">
+              <span className="inline-block font-sans text-[10px] uppercase tracking-[0.2em] font-semibold text-neutral-500 bg-neutral-100 px-3 py-1.5 rounded-sm">
+                {product.subCategory}
+              </span>
+            </div>
+
+            {/* Product Title */}
+            <h1 className="font-serif text-3xl md:text-4xl lg:text-5xl text-neutral-900 mb-4 leading-tight">
+              {product.name}
+            </h1>
+
+            {/* Price */}
+            <div className="mb-6">
+              <span className="font-sans text-2xl font-semibold text-neutral-900">
+                €{product.price.toFixed(2)}
+              </span>
+            </div>
+
+            {/* Product Description */}
+            <p className="font-sans text-sm text-neutral-600 leading-relaxed mb-8">
+              {product.tagline}
+            </p>
+
+            {/* Quantity Selector */}
+            <div className="flex items-center gap-4 mb-6">
+              <button
+                onClick={() => handleQuantityChange(-1)}
+                disabled={quantity <= 1}
+                className="w-10 h-10 flex items-center justify-center border border-neutral-300 rounded-sm hover:bg-neutral-100 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
               >
-                Ingredients
+                <span className="text-lg font-light">−</span>
               </button>
-              <button 
-                onClick={() => setActiveTab('how-to-use')}
-                className={`py-3.5 font-sans text-[10px] md:text-xs uppercase tracking-widest font-bold border-b-2 transition-all cursor-pointer ${
-                  activeTab === 'how-to-use' ? 'border-black text-black bg-white' : 'border-transparent text-neutral-400 hover:text-neutral-700'
-                }`}
+              <span className="font-sans text-base font-medium w-12 text-center">{quantity}</span>
+              <button
+                onClick={() => handleQuantityChange(1)}
+                disabled={quantity >= product.stock}
+                className="w-10 h-10 flex items-center justify-center border border-neutral-300 rounded-sm hover:bg-neutral-100 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
               >
-                How To Use
-              </button>
-              <button 
-                onClick={() => setActiveTab('safety')}
-                className={`py-3.5 font-sans text-[10px] md:text-xs uppercase tracking-widest font-bold border-b-2 transition-all cursor-pointer ${
-                  activeTab === 'safety' ? 'border-black text-black bg-white' : 'border-transparent text-neutral-400 hover:text-neutral-700'
-                }`}
-              >
-                Details
+                <span className="text-lg font-light">+</span>
               </button>
             </div>
 
-            {/* Content View Workspace Panel */}
-            <div className="p-6 text-left min-h-[160px] flex flex-col justify-start">
+            {/* Add to Cart Button */}
+            <button
+              onClick={handleAddToCart}
+              disabled={isOutOfStock}
+              className={`w-full font-sans text-sm font-semibold uppercase tracking-wider py-4 rounded-sm transition-all duration-300 mb-4 ${
+                isOutOfStock
+                  ? 'bg-neutral-200 text-neutral-400 cursor-not-allowed'
+                  : 'bg-[#2C5F4E] text-white hover:bg-[#234a3d]'
+              }`}
+            >
+              {isOutOfStock ? 'Out of Stock' : 'Add to Cart'}
+            </button>
+
+            {/* Stock Warning */}
+            {!isOutOfStock && product.stock <= 15 && (
+              <p className="text-xs font-sans text-amber-700 mb-6 font-medium">
+                Only {product.stock} left in stock
+              </p>
+            )}
+
+            {/* Product Details Accordion */}
+            <div className="border-t border-neutral-200 mt-8">
               
-              {/* TAB CONTENT A: ACCORDION INGREDIENTS */}
-              {activeTab === 'ingredients' && (
-                <div className="flex flex-wrap gap-2 animate-fadeIn">
-                  {product.ingredients.map((item, idx) => (
-                    <span key={idx} className="bg-neutral-50 border border-neutral-100 text-neutral-600 text-[11px] font-sans tracking-wide uppercase px-3 py-1.5 rounded-sm">
-                      {item}
-                    </span>
-                  ))}
-                </div>
-              )}
+              {/* Description & Philosophy Accordion */}
+              <div className="border-b border-neutral-200">
+                <button
+                  onClick={() => toggleAccordion('description')}
+                  className="w-full flex items-center justify-between py-5 text-left group"
+                >
+                  <span className="font-sans text-sm font-semibold uppercase tracking-wider text-neutral-900">
+                    Description & Philosophy
+                  </span>
+                  <span className={`text-xl transition-transform duration-300 ${activeTab === 'description' ? 'rotate-180' : ''}`}>
+                    {activeTab === 'description' ? '−' : '+'}
+                  </span>
+                </button>
+                {activeTab === 'description' && (
+                  <div className="pb-6 animate-fadeIn">
+                    <p className="font-sans text-sm text-neutral-600 leading-relaxed mb-4">
+                      {product.tagline}
+                    </p>
+                    <p className="font-sans text-xs text-neutral-500 leading-relaxed">
+                      Hand-poured. 100% herbal & vegan. {product.netWt}
+                    </p>
+                  </div>
+                )}
+              </div>
 
-              {/* TAB CONTENT B: ACCORDION DIRECTIONS FOR USE */}
-              {activeTab === 'how-to-use' && (
-                <ol className="flex flex-col gap-3 font-sans text-xs text-neutral-600 leading-relaxed tracking-wide list-decimal pl-4 animate-fadeIn">
-                  {product.howToUse.map((step, idx) => (
-                    <li key={idx} className="pl-1">
-                      {step}
-                    </li>
-                  ))}
-                </ol>
-              )}
+              {/* Ingredients Accordion */}
+              <div className="border-b border-neutral-200">
+                <button
+                  onClick={() => toggleAccordion('ingredients')}
+                  className="w-full flex items-center justify-between py-5 text-left group"
+                >
+                  <span className="font-sans text-sm font-semibold uppercase tracking-wider text-neutral-900">
+                    Ingredients
+                  </span>
+                  <span className={`text-xl transition-transform duration-300 ${activeTab === 'ingredients' ? 'rotate-180' : ''}`}>
+                    {activeTab === 'ingredients' ? '−' : '+'}
+                  </span>
+                </button>
+                {activeTab === 'ingredients' && (
+                  <div className="pb-6 animate-fadeIn">
+                    <div className="flex flex-wrap gap-2">
+                      {product.ingredients.map((item, idx) => (
+                        <span key={idx} className="bg-neutral-100 text-neutral-700 text-xs font-sans px-3 py-1.5 rounded-full">
+                          {item}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
 
-              {/* TAB CONTENT C: EXPIRY & OTHER INFO LABELS */}
-              {activeTab === 'safety' && (
-                <div className="flex flex-col gap-3 text-xs font-sans text-neutral-600 leading-relaxed tracking-wide animate-fadeIn">
-                  <p>
-                    <span className="font-bold uppercase tracking-wider text-neutral-800 block mb-0.5">Shelf Life / Expiry:</span>
-                    {product.expiry}
-                  </p>
-                  <div className="w-full h-[1px] bg-neutral-100 my-1" />
-                  <p className="text-neutral-500 font-light whitespace-pre-line text-[11px]">
-                    {product.otherInfo}
-                  </p>
-                </div>
-              )}
+              {/* How to Use Accordion */}
+              <div className="border-b border-neutral-200">
+                <button
+                  onClick={() => toggleAccordion('howToUse')}
+                  className="w-full flex items-center justify-between py-5 text-left group"
+                >
+                  <span className="font-sans text-sm font-semibold uppercase tracking-wider text-neutral-900">
+                    How to Use
+                  </span>
+                  <span className={`text-xl transition-transform duration-300 ${activeTab === 'howToUse' ? 'rotate-180' : ''}`}>
+                    {activeTab === 'howToUse' ? '−' : '+'}
+                  </span>
+                </button>
+                {activeTab === 'howToUse' && (
+                  <div className="pb-6 animate-fadeIn">
+                    <ol className="list-decimal list-inside space-y-2 font-sans text-sm text-neutral-600">
+                      {product.howToUse.map((step, idx) => (
+                        <li key={idx} className="leading-relaxed">
+                          {step}
+                        </li>
+                      ))}
+                    </ol>
+                  </div>
+                )}
+              </div>
+
+              {/* Safety & Details Accordion */}
+              <div className="border-b border-neutral-200">
+                <button
+                  onClick={() => toggleAccordion('safety')}
+                  className="w-full flex items-center justify-between py-5 text-left group"
+                >
+                  <span className="font-sans text-sm font-semibold uppercase tracking-wider text-neutral-900">
+                    Safety & Details
+                  </span>
+                  <span className={`text-xl transition-transform duration-300 ${activeTab === 'safety' ? 'rotate-180' : ''}`}>
+                    {activeTab === 'safety' ? '−' : '+'}
+                  </span>
+                </button>
+                {activeTab === 'safety' && (
+                  <div className="pb-6 animate-fadeIn">
+                    <div className="space-y-3 font-sans text-sm text-neutral-600">
+                      <p>
+                        <span className="font-semibold text-neutral-800 block mb-1">Shelf Life:</span>
+                        {product.expiry}
+                      </p>
+                      <p className="text-xs text-neutral-500 leading-relaxed">
+                        {product.otherInfo}
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </div>
 
             </div>
 
           </div>
 
         </div>
-
       </div>
 
     </main>

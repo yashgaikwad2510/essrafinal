@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const ESSAARA_PRODUCTS = [
   {
@@ -86,15 +87,18 @@ const ESSAARA_PRODUCTS = [
   }
 ];
 
+import { useCart } from '../context/CartContext';
+
 const ShopPage = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [activeRitualProduct, setActiveRitualProduct] = useState(null);
+  const { products, addToCart } = useCart();
 
   const categories = ["All", "Snan (Bath)", "Elements (Home)", "Scent (Aroma)"];
 
   const filteredProducts = selectedCategory === "All"
-    ? ESSAARA_PRODUCTS
-    : ESSAARA_PRODUCTS.filter(p => p.category === selectedCategory);
+    ? products
+    : products.filter(p => p.category === selectedCategory);
 
   return (
     <main className="w-full bg-[#FDFBF7] min-h-screen py-12 px-4 md:px-8 max-w-7xl mx-auto text-neutral-900 font-sans">
@@ -152,29 +156,33 @@ const ShopPage = () => {
                     ✕
                   </button>
 
-                  {product.image ? (
-                    <img 
-                      src={product.image} 
-                      alt={product.name} 
-                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 hover:scale-105" 
-                    />
+                  {product.productImages?.[0] ? (
+                    <Link to={`/product/${product.id || product._id}`} className="absolute inset-0 w-full h-full z-10">
+                      <img 
+                        src={product.productImages[0]} 
+                        alt={product.name} 
+                        className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" 
+                      />
+                    </Link>
                   ) : (
                     /* Placeholder Art Monogram Layer */
-                    <div className="absolute inset-0 flex flex-col items-center justify-center p-4 text-center select-none bg-gradient-to-br from-neutral-50 to-[#FAF7F2]">
+                    <Link to={`/product/${product.id || product._id}`} className="absolute inset-0 flex flex-col items-center justify-center p-4 text-center select-none bg-gradient-to-br from-neutral-50 to-[#FAF7F2] z-10 hover:text-black">
                       <span className="font-serif text-4xl font-extralight text-neutral-200/80 tracking-widest">
                         E
                       </span>
                       <p className="text-[9px] font-sans uppercase tracking-widest text-neutral-400/80 max-w-[85%] mt-2 leading-relaxed">
                         {product.name}
                       </p>
-                    </div>
+                    </Link>
                   )}
                 </div>
 
                 {/* PRODUCT TITLE - UPPERCASE WITH TRUNCATION */}
-                <h3 className="font-sans text-xs font-bold uppercase tracking-wider text-neutral-900 truncate mb-1">
-                  {product.name}
-                </h3>
+                <Link to={`/product/${product.id || product._id}`} className="no-underline text-neutral-900 hover:text-black block mb-1">
+                  <h3 className="font-sans text-xs font-bold uppercase tracking-wider truncate">
+                    {product.name}
+                  </h3>
+                </Link>
 
                 {/* TAGLINE OVERLAY - LIGHT GREY UPPERCASE */}
                 <p className="font-sans text-[10px] text-neutral-400 uppercase tracking-wide font-normal truncate mb-4">
@@ -184,7 +192,7 @@ const ShopPage = () => {
                 {/* WEIGHT & PRICE MATRIX ROW */}
                 <div className="flex justify-between items-center text-left mb-5 pt-1 border-t border-neutral-50">
                   <span className="font-sans text-[11px] text-neutral-400 font-light">
-                    {product.weight}
+                    {product.netWt}
                   </span>
                   <span className="font-sans text-xs font-bold text-neutral-950">
                     ₹{product.price}.00
@@ -192,8 +200,16 @@ const ShopPage = () => {
                 </div>
 
                 {/* FULL-WIDTH ANCHORED ACTION BUTTON */}
-                <button className="w-full bg-black text-white text-[10px] font-bold uppercase tracking-[0.2em] py-3.5 hover:bg-neutral-900 rounded-lg transition-colors shadow-sm cursor-pointer border-none mt-auto">
-                  Move To Bag
+                <button 
+                  onClick={() => { if (product.stock > 0) addToCart(product.id, null) }}
+                  disabled={product.stock === 0}
+                  className={`w-full text-[10px] font-bold uppercase tracking-[0.2em] py-3.5 rounded-lg transition-colors shadow-sm mt-auto border-none ${
+                    product.stock === 0 
+                      ? "bg-neutral-300 text-neutral-500 cursor-not-allowed" 
+                      : "bg-black text-white hover:bg-neutral-900 cursor-pointer"
+                  }`}
+                >
+                  {product.stock === 0 ? "Sold Out" : "Move To Bag"}
                 </button>
 
               </div>
@@ -208,7 +224,7 @@ const ShopPage = () => {
                   <div className="mb-2">
                     <span className="text-[9px] font-bold uppercase tracking-widest text-neutral-400 block mb-1">The Sacred Ritual</span>
                     <ol className="list-decimal list-inside text-[11px] text-neutral-700 font-light flex flex-col gap-1 leading-relaxed">
-                      {product.howToUse.map((step, idx) => (
+                      {product.howToUse?.map((step, idx) => (
                         <li key={idx}>{step}</li>
                       ))}
                     </ol>

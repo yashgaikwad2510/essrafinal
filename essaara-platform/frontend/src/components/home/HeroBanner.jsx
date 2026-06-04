@@ -6,9 +6,21 @@ const HeroBanner = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const slides = [
-    { id: 4, image: "/images/bathbombnner.png" },
-    { id: 5, image: "/images/wommenbanner.png" },
-    { id: 6, image: "/images/goldsoap-banner.png" }
+    { id: 1, image: "/images/banner/Bath_Bomb.png" },
+    { id: 2, image: "/images/banner/candle.png" },
+    { id: 3, image: "/images/banner/candle2.png" },
+    { id: 4, image: "/images/banner/candle3.png" },
+    { id: 5, image: "/images/banner/perfume.png" },
+    { id: 6, image: "/images/banner/perfume2.png" },
+    { id: 7, image: "/images/banner/perfume3.png" },
+    { id: 8, image: "/images/banner/perfume4.png" },
+    { id: 9, image: "/images/banner/perfume5.png" },
+    { id: 10, image: "/images/banner/scrub.png" },
+    { id: 11, image: "/images/banner/scrub2.png" },
+    { id: 12, image: "/images/banner/soap.png" },
+    { id: 13, image: "/images/banner/soap2.png" },
+    { id: 14, image: "/images/banner/soap3.png" },
+    { id: 15, image: "/images/banner/soap4.png" }
   ];
 
   // Auto-rotate timeline cycling through slides every 5 seconds
