@@ -1,13 +1,44 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import { essaaraProducts } from '../data/products'; // Direct single source of truth!
 
 const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
-  // Global single-source arrays
-  const [products, setProducts] = useState(essaaraProducts);
-  const [cart, setCart] = useState([]);
+  const [products, setProducts] = useState([]);
+  const [cart, setCart] = useState(() => {
+    try {
+      const saved = localStorage.getItem('essaaraCart');
+      return saved ? JSON.parse(saved) : [];
+    } catch (e) {
+      return [];
+    }
+  });
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+        const res = await fetch(`${apiUrl}/api/products`);
+        if (!res.ok) throw new Error('Failed to fetch from backend');
+        const data = await res.json();
+        setProducts(data);
+      } catch (err) {
+        console.warn('Backend not available, falling back to local data:', err);
+        setProducts(essaaraProducts);
+        setError('Using local mock data');
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProducts();
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('essaaraCart', JSON.stringify(cart));
+  }, [cart]);
 
   // 1. GLOBAL ADD-TO-CART (Updates bag items and checks real inventory stock pools)
   const addToCart = (productId, selectedOption) => {
@@ -21,9 +52,9 @@ export const CartProvider = ({ children }) => {
       );
 
       if (existingIndex > -1) {
-        const newCart = [...prevCart];
-        newCart[existingIndex].quantity += 1;
-        return newCart;
+        return prevCart.map((item, index) =>
+          index === existingIndex ? { ...item, quantity: item.quantity + 1 } : item
+        );
       }
 
       return [...prevCart, { ...targetProduct, option: selectedOption, quantity: 1 }];
@@ -44,7 +75,7 @@ export const CartProvider = ({ children }) => {
     const targetProduct = products.find(p => p.id === productId);
     
     // If user is trying to add more, make sure we have enough inventory
-    if (delta > 0 && targetProduct.stock === 0) return;
+    if (delta > 0 && targetProduct.stock < delta) return;
 
     setCart((prevCart) => {
       return prevCart.map((item) => {
@@ -91,7 +122,9 @@ export const CartProvider = ({ children }) => {
       addToCart, 
       removeFromCart, 
       updateQuantity, 
-      getSubtotal 
+      getSubtotal,
+      loading,
+      error
     }}>
       {children}
     </CartContext.Provider>

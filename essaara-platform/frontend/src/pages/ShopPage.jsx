@@ -1,104 +1,33 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-const ESSAARA_PRODUCTS = [
-  {
-    id: "ess-soap-gold",
-    name: "Handmade Ayurvedic Gold Soap",
-    category: "Snan (Bath)",
-    price: 799,
-    weight: "100 gm",
-    tagline: "A divine blend of herbs & gold, for the skin that glows with purity",
-    image: "/images/sope.png",
-    ingredients: "Swarna Raj Bangeshwar, Gulvel Satva (Tinospora cordifolia), Neem, Rakta Chandan, Aloe Vera, Tulsi, Vetiver (Songeru), Manjistha, Daruharidra, Shikekai, Reetha, Saptarangi, and pure botanicals.",
-    howToUse: [
-      "Gently lather the soap with water.",
-      "Apply to face and body in circular motions.",
-      "Rinse well and pat dry.",
-      "For best results, use twice daily."
-    ],
-    otherInfo: "Tip: Keep the soap in a dry place after use to preserve its natural essence."
-  },
-  {
-    id: "ess-dragonfly-candle",
-    name: "Both Dragonfly Signature Candle",
-    category: "Elements (Home)",
-    price: 1699,
-    weight: "Standard Size (6cm base)",
-    tagline: "Encourages the idea of giving back to nature—one candle, one tree.",
-    image: "/images/candel.png",
-    ingredients: "Medicinal Soy wax, Blend of Sandalwood, Tulsi, Vetiver and rose essence. Features Vaijanti Seeds or Gunja seeds at the base.",
-    howToUse: [
-      "Let the candle burn fully and cool.",
-      "Remove the outer cup or packaging.",
-      "Place the wax residue with Vaijanti seeds in moist soil.",
-      "Water regularly and watch your candle turn into a new life."
-    ],
-    otherInfo: "Spiritual & Emotional Benefits: Promotes mental peace and positivity. Ideal for daily puja, meditation, yoga, and relaxation rituals. Adds a sacred, calming glow."
-  },
-  {
-    id: "ess-perfume-10ml",
-    name: "Signature Perfume Oil",
-    category: "Scent (Aroma)",
-    price: 699,
-    weight: "10 ml",
-    tagline: "From Jyoti to Janani - the light that becomes life",
-    image: "/images/perfume.png",
-    ingredients: "Prajakta Flower, Essential oils, Natural fixatives, Purified water.",
-    howToUse: [
-      "Apply a few drops to clean, moisturized skin at your pulse points (wrists, neck, behind ears, inner elbows).",
-      "Gently dab, do not rub, to let the skin's warmth diffuse the scent naturally."
-    ],
-    otherInfo: "Storage: Store in a cool, dry place away from direct sunlight. Avoid contact with eyes. For external use."
-  },
-  {
-    id: "ess-scrub-neem",
-    name: "Natural Glow Body Scrub (Neem)",
-    category: "Snan (Bath)",
-    price: 349,
-    weight: "70 gm",
-    tagline: "Natural Glow | Pure Herbs | Timeless Beauty",
-    image: "/images/bathscrb.png",
-    ingredients: "Shikakai, Chandan, Ritha, Bavchi, Sugandhi Kachora, Vetiver, Nagarmotha, Kali Halad.",
-    howToUse: [
-      "Take 1-2 tsp of the scrub.",
-      "Mix with rose water, milk, or aloe vera gel to form a paste.",
-      "Apply gently on a damp face and neck in circular motions.",
-      "Leave for 5-10 minutes, then rinse with lukewarm water.",
-      "Use 2-3 times a week for visible radiance."
-    ],
-    otherInfo: "100% Herbal & Chemical-Free. No Paraben, No Sulphate, No Preservatives. Deep Cleansing + Gentle Exfoliation."
-  },
-  {
-    id: "ess-bathbomb-combo",
-    name: "Combo of 2 Bath Bomb",
-    category: "Snan (Bath)",
-    price: 499,
-    weight: "30 gm each",
-    tagline: "pushpa snan - A luxurious, effervescent floral immersion",
-    image: "/images/bathbom.png",
-    ingredients: "Dried petals of Rose, Hibiscus, Jasmine oil, Marigold, Essential oils, Epsom salt, citric acid, and Bicarbonate soda.",
-    howToUse: [
-      "Unwrap the bath bomb and drop it into a tub filled with warm, comfortable water.",
-      "Let it fizz and fully dissolve.",
-      "Get in the water to enjoy a deeply relaxing and moisturizing experience."
-    ],
-    otherInfo: "Expiry: 3 years from manufacturing date. Perfect for luxury self-care rituals."
-  }
-];
+
 
 import { useCart } from '../context/CartContext';
 
 const ShopPage = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [activeRitualProduct, setActiveRitualProduct] = useState(null);
-  const { products, addToCart } = useCart();
+  const { products, addToCart, loading, error } = useCart();
 
-  const categories = ["All", "Snan (Bath)", "Elements (Home)", "Scent (Aroma)"];
+  const categories = [
+    { id: "All", label: "All" },
+    { id: "bath-body", label: "Snan (Bath)" },
+    { id: "candles", label: "Elements (Home)" },
+    { id: "fragrance", label: "Scent (Aroma)" }
+  ];
 
   const filteredProducts = selectedCategory === "All"
     ? products
     : products.filter(p => p.category === selectedCategory);
+
+  if (loading) {
+    return (
+      <div className="w-full min-h-screen flex items-center justify-center bg-[#FDFBF7]">
+        <p className="font-sans text-xs uppercase tracking-widest text-neutral-400">Loading Collection...</p>
+      </div>
+    );
+  }
 
   return (
     <main className="w-full bg-[#FDFBF7] min-h-screen py-12 px-4 md:px-8 max-w-7xl mx-auto text-neutral-900 font-sans">
@@ -118,18 +47,18 @@ const ShopPage = () => {
       <div className="flex justify-center gap-6 md:gap-8 border-b border-neutral-100 pb-4 mb-12 text-[11px] font-bold tracking-widest uppercase overflow-x-auto whitespace-nowrap scrollbar-none">
         {categories.map((cat) => (
           <button
-            key={cat}
+            key={cat.id}
             onClick={() => {
-              setSelectedCategory(cat);
+              setSelectedCategory(cat.id);
               setActiveRitualProduct(null);
             }}
             className={`pb-2 transition-all cursor-pointer bg-transparent border-none ${
-              selectedCategory === cat 
+              selectedCategory === cat.id 
                 ? "text-neutral-950 border-b-2 border-neutral-950 font-black" 
                 : "text-neutral-400 hover:text-neutral-950"
             }`}
           >
-            {cat}
+            {cat.label}
           </button>
         ))}
       </div>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useCart } from '../../context/CartContext';
+import { Link } from 'react-router-dom';
 
 const CartDrawer = () => {
   const { cart, isCartOpen, setIsCartOpen, removeFromCart, updateQuantity, getSubtotal } = useCart();
@@ -55,9 +56,13 @@ const CartDrawer = () => {
               <span>Subtotal</span>
               <span>₹{getSubtotal().toLocaleString('en-IN')}</span>
             </div>
-            <button className="w-full bg-black text-white py-3 uppercase tracking-widest text-xs font-bold cursor-pointer">
+            <Link 
+              to="/checkout" 
+              onClick={() => setIsCartOpen(false)}
+              className="block w-full text-center bg-black text-white py-3 uppercase tracking-widest text-xs font-bold cursor-pointer no-underline"
+            >
               Checkout
-            </button>
+            </Link>
           </div>
         )}
       </div>

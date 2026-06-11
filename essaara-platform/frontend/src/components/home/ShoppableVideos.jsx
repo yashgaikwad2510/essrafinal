@@ -8,7 +8,7 @@ const videoFeeds = [
     productName: "Gold Aura Soap",
     productDesc: "Handcrafted bar using Swarna Raj Bangeshwar for radiant skin.",
     price: "1,645",
-    link: "/product/gold-aura-soap"
+    link: "/product/ess-soap-gold"
   },
   {
     id: "v2",
@@ -16,7 +16,7 @@ const videoFeeds = [
     productName: "Jyoti To Janani Candle",
     productDesc: "100% soy wax infused with sacred plantable Vaijanti seeds.",
     price: "2,250",
-    link: "/product/jyoti-to-janani"
+    link: "/product/ess-candle-jyoti"
   }
 ];
 
@@ -120,7 +120,7 @@ const VideoCard = ({ feed }) => {
         {/* Chevron Route Indicator */}
         <div className="text-neutral-400 px-1">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-3 h-3">
-            <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5-7.5-7.5-7.5" />
+            <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
           </svg>
         </div>
       </a>

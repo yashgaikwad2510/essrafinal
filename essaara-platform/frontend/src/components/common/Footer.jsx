@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
   const [email, setEmail] = useState('');
@@ -72,11 +73,11 @@ const Footer = () => {
           <div className="flex flex-col gap-4">
             <h4 className="font-sans text-xs font-bold tracking-[0.15em] uppercase text-white mb-1">Shop</h4>
             <ul className="flex flex-col gap-3 text-xs font-light text-neutral-300 tracking-wide">
-              <li><a href="/shop" className="hover:text-essaara-gold transition-colors duration-200">All Products</a></li>
-              <li><a href="/category/skincare" className="hover:text-essaara-gold transition-colors duration-200">Skin Care</a></li>
-              <li><a href="/category/candles" className="hover:text-essaara-gold transition-colors duration-200">Candles</a></li>
-              <li><a href="/category/bath" className="hover:text-essaara-gold transition-colors duration-200">Bath & Body</a></li>
-              <li><a href="/category/gifting" className="hover:text-essaara-gold transition-colors duration-200">Best Sellers</a></li>
+              <li><Link to="/shop" className="hover:text-essaara-gold transition-colors duration-200">All Products</Link></li>
+              <li><Link to="/shop" className="hover:text-essaara-gold transition-colors duration-200">Skin Care</Link></li>
+              <li><Link to="/shop" className="hover:text-essaara-gold transition-colors duration-200">Candles</Link></li>
+              <li><Link to="/shop" className="hover:text-essaara-gold transition-colors duration-200">Bath & Body</Link></li>
+              <li><Link to="/shop" className="hover:text-essaara-gold transition-colors duration-200">Best Sellers</Link></li>
             </ul>
           </div>
 
@@ -84,10 +85,10 @@ const Footer = () => {
           <div className="flex flex-col gap-4">
             <h4 className="font-sans text-xs font-bold tracking-[0.15em] uppercase text-white mb-1">Customer Care</h4>
             <ul className="flex flex-col gap-3 text-xs font-light text-neutral-300 tracking-wide">
-              <li><a href="/contact" className="hover:text-essaara-gold transition-colors duration-200">Contact Us</a></li>
-              <li><a href="/faq" className="hover:text-essaara-gold transition-colors duration-200">FAQs</a></li>
-              <li><a href="/shipping-policy" className="hover:text-essaara-gold transition-colors duration-200">Delivery and Returns</a></li>
-              <li><a href="/privacy-policy" className="hover:text-essaara-gold transition-colors duration-200">Privacy Policy</a></li>
+              <li><Link to="/contact" className="hover:text-essaara-gold transition-colors duration-200">Contact Us</Link></li>
+              <li><Link to="/faq" className="hover:text-essaara-gold transition-colors duration-200">FAQs</Link></li>
+              <li><Link to="/shipping-policy" className="hover:text-essaara-gold transition-colors duration-200">Delivery and Returns</Link></li>
+              <li><Link to="/privacy-policy" className="hover:text-essaara-gold transition-colors duration-200">Privacy Policy</Link></li>
             </ul>
           </div>
 
@@ -95,10 +96,10 @@ const Footer = () => {
           <div className="flex flex-col gap-4">
             <h4 className="font-sans text-xs font-bold tracking-[0.15em] uppercase text-white mb-1">Quick Links</h4>
             <ul className="flex flex-col gap-3 text-xs font-light text-neutral-300 tracking-wide">
-              <li><a href="/about" className="hover:text-essaara-gold transition-colors duration-200">About Us</a></li>
-              <li><a href="/rituals" className="hover:text-essaara-gold transition-colors duration-200">Complimentary Ritual</a></li>
-              <li><a href="/blog" className="hover:text-essaara-gold transition-colors duration-200">Essaara Cares</a></li>
-              <li><a href="/corporate-gifting" className="hover:text-essaara-gold transition-colors duration-200">Corporate Gifting</a></li>
+              <li><Link to="/about" className="hover:text-essaara-gold transition-colors duration-200">About Us</Link></li>
+              <li><Link to="/" className="hover:text-essaara-gold transition-colors duration-200">Complimentary Ritual</Link></li>
+              <li><Link to="/blog" className="hover:text-essaara-gold transition-colors duration-200">Essaara Cares</Link></li>
+              <li><Link to="/contact" className="hover:text-essaara-gold transition-colors duration-200">Corporate Gifting</Link></li>
             </ul>
           </div>
 
@@ -106,9 +107,9 @@ const Footer = () => {
           <div className="flex flex-col gap-4">
             <h4 className="font-sans text-xs font-bold tracking-[0.15em] uppercase text-white mb-1">My Account</h4>
             <ul className="flex flex-col gap-3 text-xs font-light text-neutral-300 tracking-wide">
-              <li><a href="/profile" className="hover:text-essaara-gold transition-colors duration-200">My Profile</a></li>
-              <li><a href="/orders" className="hover:text-essaara-gold transition-colors duration-200">My Orders</a></li>
-              <li><a href="/track" className="hover:text-essaara-gold transition-colors duration-200">Track My Order</a></li>
+              <li><Link to="/" className="hover:text-essaara-gold transition-colors duration-200">My Profile</Link></li>
+              <li><Link to="/" className="hover:text-essaara-gold transition-colors duration-200">My Orders</Link></li>
+              <li><Link to="/" className="hover:text-essaara-gold transition-colors duration-200">Track My Order</Link></li>
             </ul>
           </div>
 
@@ -147,8 +148,8 @@ const Footer = () => {
                 />
                 <span className="text-[10px] font-light text-neutral-400 tracking-wide leading-tight group-hover:text-neutral-300 transition-colors">
                   By Checking This Box, You Consent To Our{' '}
-                  <a href="/privacy-policy" className="underline hover:text-white">Privacy Policy</a> and{' '}
-                  <a href="/terms" className="underline hover:text-white">Terms Of Use</a>.
+                  <Link to="/privacy-policy" className="underline hover:text-white">Privacy Policy</Link> and{' '}
+                  <Link to="/" className="underline hover:text-white">Terms Of Use</Link>.
                 </span>
               </label>
             </form>

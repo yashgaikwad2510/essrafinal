@@ -31,7 +31,7 @@ const CheckoutPage = () => {
     
     // Simulate payment capture gateway processing loop
     alert("✨ Your sacred order has been received successfully! Processing checkout pipeline.");
-    window.location.href = "/";
+    navigate('/');
   };
 
   const subtotal = getSubtotal();

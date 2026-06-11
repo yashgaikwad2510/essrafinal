@@ -98,7 +98,7 @@ const ProductDetailsPage = () => {
             {/* Price */}
             <div className="mb-6">
               <span className="font-sans text-2xl font-semibold text-neutral-900">
-                €{product.price.toFixed(2)}
+                ₹{product.price.toFixed(2)}
               </span>
             </div>
 

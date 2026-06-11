@@ -23,11 +23,26 @@ export default {
       },
       animation: {
         'marquee-right': 'marquee-right 25s linear infinite',
+        'slideDown': 'slideDown 0.3s ease-out forwards',
+        'scaleIn': 'scaleIn 0.2s ease-out forwards',
+        'fadeIn': 'fadeIn 0.3s ease-in-out forwards',
       },
       keyframes: {
         'marquee-right': {
           '0%': { transform: 'translateX(-50%)' },
           '100%': { transform: 'translateX(0%)' },
+        },
+        'slideDown': {
+          '0%': { opacity: 0, transform: 'translateY(-10px)' },
+          '100%': { opacity: 1, transform: 'translateY(0)' },
+        },
+        'scaleIn': {
+          '0%': { opacity: 0, transform: 'scale(0.95)' },
+          '100%': { opacity: 1, transform: 'scale(1)' },
+        },
+        'fadeIn': {
+          '0%': { opacity: 0 },
+          '100%': { opacity: 1 },
         }
       }
     },
