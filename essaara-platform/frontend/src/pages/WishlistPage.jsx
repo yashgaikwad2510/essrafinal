@@ -1,25 +1,69 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const WishlistPage = () => {
   const { products, addToCart } = useCart();
   const navigate = useNavigate();
+  const { user, token } = useAuth();
+  const [wishlistItems, setWishlistItems] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // Mock initial items using the first two products in the unified array for visualization
-  const [wishlistItems, setWishlistItems] = useState([
-    products[0],
-    products[1]
-  ].filter(Boolean)); 
+  useEffect(() => {
+    const fetchWishlist = async () => {
+      if (!user || !token) {
+        setWishlistItems([]);
+        setLoading(false);
+        return;
+      }
+      try {
+        const res = await axios.get(`${import.meta.env.VITE_API_URL || 'https://essrafinal.onrender.com'}/api/auth/wishlist`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        setWishlistItems(res.data);
+      } catch (err) {
+        console.error('Error fetching wishlist', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchWishlist();
+  }, [user, token]);
 
-  const handleRemoveFromWishlist = (id) => {
-    setWishlistItems(prev => prev.filter(item => item.id !== id));
+  const handleRemoveFromWishlist = async (id) => {
+    if (!user || !token) return;
+    try {
+      await axios.delete(`${import.meta.env.VITE_API_URL || 'https://essrafinal.onrender.com'}/api/auth/wishlist/${id}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setWishlistItems(prev => prev.filter(item => (item.id || item._id) !== id));
+    } catch (err) {
+      console.error('Failed to remove from wishlist', err);
+    }
   };
 
   const handleMoveToCart = (productId) => {
     addToCart(productId, null);
     handleRemoveFromWishlist(productId);
   };
+
+  if (loading) {
+    return <div className="min-h-[60vh] flex items-center justify-center font-sans text-xs uppercase tracking-widest text-neutral-400">Loading Wishlist...</div>;
+  }
+
+  if (!user) {
+    return (
+      <div className="min-h-[60vh] flex flex-col items-center justify-center text-center px-6">
+        <h2 className="font-serif text-2xl uppercase tracking-widest mb-2">Login Required</h2>
+        <p className="text-xs text-neutral-500 max-w-sm mb-6 font-light">Please log in to view and save your favorite ritual botanicals.</p>
+        <button onClick={() => navigate('/login')} className="font-sans text-xs font-bold tracking-widest uppercase bg-black text-white px-8 py-3.5 hover:bg-essaara-earth transition-colors">
+          Log In
+        </button>
+      </div>
+    );
+  }
 
   if (wishlistItems.length === 0) {
     return (
@@ -54,13 +98,14 @@ const WishlistPage = () => {
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {wishlistItems.map((product) => {
           const isOutOfStock = product.stock === 0;
+          const productId = product.id || product._id;
 
           return (
-            <div key={product.id} className="bg-white border border-neutral-200/60 rounded-2xl p-5 flex flex-col justify-between group transition-all hover:shadow-md relative">
+            <div key={productId} className="bg-white border border-neutral-200/60 rounded-2xl p-5 flex flex-col justify-between group transition-all hover:shadow-md relative">
               
               {/* Absoluted Position Close/Remove cross button */}
               <button 
-                onClick={() => handleRemoveFromWishlist(product.id)}
+                onClick={() => handleRemoveFromWishlist(productId)}
                 className="absolute top-3 right-3 z-10 p-1 text-neutral-300 hover:text-red-700 cursor-pointer transition-colors"
                 title="Remove from wishlist"
               >
@@ -72,10 +117,10 @@ const WishlistPage = () => {
               {/* Visual Thumbnail Window Box */}
               <div 
                 className="w-full aspect-square flex items-center justify-center p-6 mb-4 bg-[#FAF9F6] rounded-xl cursor-pointer overflow-hidden relative"
-                onClick={() => navigate(`/product/${product.id}`)}
+                onClick={() => navigate(`/product/${productId}`)}
               >
                 <img 
-                  src={product.productImages[0]} 
+                  src={product.productImages?.[0] || '/images/sope.png'} 
                   alt={product.name} 
                   className="max-h-full max-w-full object-contain mix-blend-multiply transform transition-transform duration-500 group-hover:scale-105 rounded-xl"
                 />
@@ -84,7 +129,7 @@ const WishlistPage = () => {
               {/* Descriptive Content Meta Block */}
               <div className="text-left flex flex-col flex-grow">
                 <h3 
-                  onClick={() => navigate(`/product/${product.id}`)}
+                  onClick={() => navigate(`/product/${productId}`)}
                   className="font-sans text-xs font-semibold uppercase tracking-wider truncate text-neutral-800 hover:text-amber-800 cursor-pointer transition-colors"
                 >
                   {product.name}
@@ -98,14 +143,14 @@ const WishlistPage = () => {
                     {product.netWt}
                   </span>
                   <span className="font-sans text-xs font-bold text-neutral-900">
-                    ₹{product.price.toLocaleString('en-IN')}.00
+                    ₹{product.price?.toLocaleString('en-IN')}.00
                   </span>
                 </div>
               </div>
 
               {/* Action Button: Push directly into Shopping Bag Context */}
               <button
-                onClick={() => !isOutOfStock && handleMoveToCart(product.id)}
+                onClick={() => !isOutOfStock && handleMoveToCart(productId)}
                 disabled={isOutOfStock}
                 className={`w-full mt-4 font-sans text-[10px] font-bold uppercase tracking-widest py-2.5 transition-colors duration-300 rounded-lg border border-none ${
                   isOutOfStock

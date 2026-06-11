@@ -57,7 +57,7 @@ const CartDrawer = () => {
               <span>₹{getSubtotal().toLocaleString('en-IN')}</span>
             </div>
             <Link 
-              to="/checkout" 
+              to="/cart-checkout" 
               onClick={() => setIsCartOpen(false)}
               className="block w-full text-center bg-black text-white py-3 uppercase tracking-widest text-xs font-bold cursor-pointer no-underline"
             >

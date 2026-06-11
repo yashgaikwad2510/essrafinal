@@ -1,6 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-
-const VideoCtaBanner = () => {
+import { Link } from 'react-router-dom';const VideoCtaBanner = () => {
   const videoRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(true);
   const [isMuted, setIsMuted] = useState(true);
@@ -76,12 +75,12 @@ const VideoCtaBanner = () => {
             Discover Your Ritual
           </h2>
           
-          <a 
-            href="/quiz"
+          <Link 
+            to="/shop"
             className="font-sans text-[11px] md:text-xs font-semibold tracking-widest uppercase border border-white bg-white/5 backdrop-blur-xs px-6 py-2.5 md:px-8 md:py-3 transition-all duration-300 hover:bg-white hover:text-essaara-earth hover:scale-102"
           >
-            Take the Quiz
-          </a>
+            Explore Collection
+          </Link>
         </div>
 
         {/* 3. INTERACTIVE CORNER CONTROLS */}

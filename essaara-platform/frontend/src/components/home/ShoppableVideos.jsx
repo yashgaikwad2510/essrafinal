@@ -7,7 +7,7 @@ const videoFeeds = [
     videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-pouring-natural-essential-oil-into-a-bowl-43003-large.mp4", // Replace with real asset URL
     productName: "Gold Aura Soap",
     productDesc: "Handcrafted bar using Swarna Raj Bangeshwar for radiant skin.",
-    price: "1,645",
+    price: "799",
     link: "/product/ess-soap-gold"
   },
   {
@@ -15,7 +15,7 @@ const videoFeeds = [
     videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-burning-candle-in-a-dim-environment-42284-large.mp4",
     productName: "Jyoti To Janani Candle",
     productDesc: "100% soy wax infused with sacred plantable Vaijanti seeds.",
-    price: "2,250",
+    price: "1,699",
     link: "/product/ess-candle-jyoti"
   }
 ];

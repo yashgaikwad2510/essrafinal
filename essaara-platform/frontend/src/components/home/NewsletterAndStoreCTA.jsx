@@ -57,7 +57,7 @@ const NewsletterAndStoreCTA = () => {
           <span className="text-[10px] md:text-[11px] font-sans text-neutral-500 tracking-wide select-none">
             By proceeding ahead, I agree and accept Essaara's{' '}
             <a href="/privacy-policy" className="underline font-medium text-neutral-700 hover:text-essaara-gold">privacy policy</a> and{' '}
-            <a href="/terms" className="underline font-medium text-neutral-700 hover:text-essaara-gold">terms</a>.
+            <a href="/terms-of-use" className="underline font-medium text-neutral-700 hover:text-essaara-gold">terms</a>.
           </span>
         </label>
 
@@ -66,7 +66,7 @@ const NewsletterAndStoreCTA = () => {
             ========================================================================= */}
         <div className="border-t border-neutral-200/60 w-full pt-10 flex flex-col items-center">
           <a 
-            href="/store-locator" 
+            href="/contact" 
             className="group flex items-center justify-center gap-2 font-serif text-xl md:text-2xl lg:text-3xl tracking-wider text-essaara-earth uppercase hover:text-essaara-gold transition-colors duration-300"
           >
             {/* Map Pin Vector Graphic */}

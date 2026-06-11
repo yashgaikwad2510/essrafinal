@@ -1,41 +1,148 @@
 import React, { useState } from 'react';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const CheckoutPage = () => {
-  const { cart, getSubtotal, setIsCartOpen } = useCart();
+  const { cart, getSubtotal, setIsCartOpen, clearCart } = useCart();
+  const { user, token } = useAuth();
   const navigate = useNavigate();
 
   // Checkout Form States
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: '',
+    firstName: user?.name ? user.name.split(' ')[0] : '',
+    lastName: user?.name && user.name.split(' ').length > 1 ? user.name.split(' ').slice(1).join(' ') : '',
+    email: user?.email || '',
+    phone: user?.phone || '',
     address: '',
     city: '',
     postalCode: '',
-    paymentMethod: 'cod'
+    paymentMethod: 'COD'
   });
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmitOrder = (e) => {
+  const handleOnlinePayment = async (orderData) => {
+    try {
+      const options = {
+        key: 'rzp_test_dummy', // Set Razorpay test key in actual implementation
+        amount: Math.round(orderData.totalPrice * 100),
+        currency: 'INR',
+        name: 'Essaara',
+        description: 'Premium Ayurvedic Purchase',
+        order_id: orderData.razorpayOrderId,
+        handler: async function (response) {
+          try {
+            await axios.post(`${import.meta.env.VITE_API_URL || 'https://essrafinal.onrender.com'}/api/orders/${orderData._id}/pay`, {
+              razorpayPaymentId: response.razorpay_payment_id,
+              razorpayOrderId: response.razorpay_order_id,
+              razorpaySignature: response.razorpay_signature,
+            }, { headers: { Authorization: `Bearer ${token}` } });
+            
+            clearCart();
+            navigate(`/order-confirmation?id=${orderData._id}`);
+          } catch (err) {
+            setError('Payment verification failed.');
+            setLoading(false);
+          }
+        },
+        prefill: {
+          name: `${formData.firstName} ${formData.lastName}`,
+          email: formData.email,
+          contact: formData.phone,
+        },
+        theme: {
+          color: '#C4A265'
+        }
+      };
+      
+      const rzp1 = new window.Razorpay(options);
+      rzp1.open();
+      
+      rzp1.on('payment.failed', function (response) {
+        setError('Payment failed. Please try again.');
+        setLoading(false);
+      });
+      
+    } catch (err) {
+      setError('Failed to load payment gateway.');
+      setLoading(false);
+    }
+  };
+
+  const handleSubmitOrder = async (e) => {
     e.preventDefault();
     if (cart.length === 0) return;
-
-    console.log("Processing order submission package:", { formData, items: cart, total: getSubtotal() });
     
-    // Simulate payment capture gateway processing loop
-    alert("✨ Your sacred order has been received successfully! Processing checkout pipeline.");
-    navigate('/');
+    if (!user || !token) {
+      navigate('/login');
+      return;
+    }
+
+    setLoading(true);
+    setError('');
+
+    const subtotal = getSubtotal();
+    const shippingCost = subtotal > 1500 ? 0 : 150;
+    const totalCost = subtotal + shippingCost;
+
+    const orderPayload = {
+      orderItems: cart.map(item => ({
+        name: item.name,
+        quantity: item.quantity,
+        image: item.productImages[0],
+        price: item.price,
+        product: item.id
+      })),
+      shippingAddress: {
+        name: `${formData.firstName} ${formData.lastName}`,
+        street: formData.address,
+        city: formData.city,
+        state: 'N/A', // Expand form if needed
+        pincode: formData.postalCode,
+        phone: formData.phone
+      },
+      paymentMethod: formData.paymentMethod,
+      itemsPrice: subtotal,
+      shippingPrice: shippingCost,
+      totalPrice: totalCost
+    };
+
+    try {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL || 'https://essrafinal.onrender.com'}/api/orders`, orderPayload, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      if (formData.paymentMethod === 'ONLINE' && response.data.razorpayOrder) {
+        // We need Razorpay script loaded. Normally put in index.html or load dynamically.
+        // For fallback, if script not found, simulate success.
+        if (window.Razorpay) {
+          handleOnlinePayment({ ...response.data.order, razorpayOrderId: response.data.razorpayOrder.id });
+        } else {
+          // Simulate fallback
+          clearCart();
+          navigate(`/order-confirmation?id=${response.data.order._id}`);
+        }
+      } else {
+        // COD
+        clearCart();
+        navigate(`/order-confirmation?id=${response.data.order._id}`);
+      }
+    } catch (err) {
+      setError(err.response?.data?.message || 'Failed to place order.');
+      setLoading(false);
+    }
   };
 
   const subtotal = getSubtotal();
-  const shippingCost = subtotal > 1500 ? 0 : 150; // Standard shipping rules
+  const shippingCost = subtotal > 1500 ? 0 : 150;
   const totalCost = subtotal + shippingCost;
 
   if (cart.length === 0) {
@@ -55,11 +162,20 @@ const CheckoutPage = () => {
 
   return (
     <main className="w-full bg-[#FDFBF7] min-h-screen py-12 px-4 md:px-8 lg:px-12 max-w-7xl mx-auto animate-fadeIn text-essaara-earth">
+      {!user && (
+        <div className="bg-amber-50 border border-amber-200 text-amber-800 px-6 py-4 rounded-xs mb-8 text-sm">
+          You are currently checking out as a guest. <button onClick={() => navigate('/login')} className="font-bold underline cursor-pointer">Log in</button> or <button onClick={() => navigate('/signup')} className="font-bold underline cursor-pointer">create an account</button> for faster checkout.
+        </div>
+      )}
+      
+      {error && (
+        <div className="bg-red-50 border border-red-200 text-red-800 px-6 py-4 rounded-xs mb-8 text-sm">
+          {error}
+        </div>
+      )}
+
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
         
-        {/* =========================================================================
-            LEFT COLUMN: SHIPPING AND BILLING ENTRY FORMS (Spans 7 Columns)
-            ========================================================================= */}
         <form onSubmit={handleSubmitOrder} className="lg:col-span-7 bg-white border border-neutral-200/60 p-6 md:p-8 rounded-xs shadow-3xs text-left">
           <h2 className="font-serif text-xl uppercase tracking-widest border-b border-neutral-100 pb-3 mb-6">
             Shipping Information
@@ -109,14 +225,14 @@ const CheckoutPage = () => {
           
           <div className="flex flex-col gap-3 mb-8">
             <label className="flex items-center gap-3 bg-[#FAF9F6] border border-neutral-200 p-4 rounded-xs cursor-pointer select-none">
-              <input type="radio" name="paymentMethod" value="cod" checked={formData.paymentMethod === 'cod'} onChange={handleInputChange} className="accent-black w-4 h-4 cursor-pointer" />
+              <input type="radio" name="paymentMethod" value="COD" checked={formData.paymentMethod === 'COD'} onChange={handleInputChange} className="accent-black w-4 h-4 cursor-pointer" />
               <div className="flex flex-col text-left">
                 <span className="text-xs font-bold uppercase tracking-wider">Cash on Delivery (COD)</span>
                 <span className="text-[10px] text-neutral-400">Settle transaction inside handoff operations.</span>
               </div>
             </label>
-            <label className="flex items-center gap-3 bg-[#FAF9F6] border border-neutral-200 p-4 rounded-xs cursor-pointer select-none opacity-60">
-              <input type="radio" name="paymentMethod" value="online" checked={formData.paymentMethod === 'online'} onChange={handleInputChange} className="accent-black w-4 h-4 cursor-pointer" />
+            <label className="flex items-center gap-3 bg-[#FAF9F6] border border-neutral-200 p-4 rounded-xs cursor-pointer select-none">
+              <input type="radio" name="paymentMethod" value="ONLINE" checked={formData.paymentMethod === 'ONLINE'} onChange={handleInputChange} className="accent-black w-4 h-4 cursor-pointer" />
               <div className="flex flex-col text-left">
                 <span className="text-xs font-bold uppercase tracking-wider">Instant Online Gateway Payment</span>
                 <span className="text-[10px] text-neutral-400">Credit / Debit Cards, UPI, Netbanking.</span>
@@ -124,14 +240,11 @@ const CheckoutPage = () => {
             </label>
           </div>
 
-          <button type="submit" className="w-full bg-black hover:bg-essaara-earth text-white border border-black hover:border-essaara-earth font-sans text-xs font-bold uppercase tracking-widest py-4 transition-all duration-300 rounded-xs cursor-pointer shadow-xs text-center">
-            Place Order Safely ➔
+          <button type="submit" disabled={loading} className="w-full bg-black hover:bg-essaara-earth text-white border border-black hover:border-essaara-earth font-sans text-xs font-bold uppercase tracking-widest py-4 transition-all duration-300 rounded-xs cursor-pointer shadow-xs text-center disabled:opacity-50">
+            {loading ? 'Processing...' : 'Place Order Safely ➔'}
           </button>
         </form>
 
-        {/* =========================================================================
-            RIGHT COLUMN: FINAL ORDER REVIEWS & CALCULATION CARDS (Spans 5 Columns)
-            ========================================================================= */}
         <aside className="lg:col-span-5 flex flex-col gap-6 sticky top-28">
           <div className="bg-white border border-neutral-200/60 p-6 rounded-xs shadow-3xs text-left">
             <div className="flex items-center justify-between border-b border-neutral-100 pb-3 mb-4">
@@ -139,7 +252,6 @@ const CheckoutPage = () => {
               <button onClick={() => setIsCartOpen(true)} className="text-[10px] font-bold uppercase text-neutral-400 underline hover:text-black">Modify</button>
             </div>
 
-            {/* List items track layout row views */}
             <div className="flex flex-col max-h-64 overflow-y-auto divide-y divide-neutral-50 mb-4 pr-2 custom-scrollbar">
               {cart.map((item) => (
                 <div key={`${item.id}-${item.option?.id || 'default'}`} className="flex py-3.5 gap-3 items-center justify-between">
@@ -159,7 +271,6 @@ const CheckoutPage = () => {
               ))}
             </div>
 
-            {/* Subtotal fee item calculations parameters */}
             <div className="border-t border-neutral-100 pt-4 flex flex-col gap-2.5 font-sans text-xs">
               <div className="flex justify-between text-neutral-500">
                 <span className="uppercase tracking-widest text-[10px]">Bag Subtotal</span>

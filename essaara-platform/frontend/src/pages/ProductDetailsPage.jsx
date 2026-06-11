@@ -41,9 +41,7 @@ const ProductDetailsPage = () => {
 
   const handleAddToCart = () => {
     if (!isOutOfStock) {
-      for (let i = 0; i < quantity; i++) {
-        addToCart(product.id, null);
-      }
+      addToCart(product, quantity);
     }
   };
 
@@ -168,7 +166,7 @@ const ProductDetailsPage = () => {
                       {product.tagline}
                     </p>
                     <p className="font-sans text-xs text-neutral-500 leading-relaxed">
-                      Hand-poured. 100% herbal & vegan. {product.netWt}
+                      {product.tagline || 'Premium Ayurvedic formulation.'} {product.netWt}
                     </p>
                   </div>
                 )}

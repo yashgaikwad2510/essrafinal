@@ -1,6 +1,7 @@
 import React, { Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { CartProvider } from './context/CartContext';
+import { AuthProvider } from './context/AuthContext';
 
 // Global Layout Framework Shells
 import Navbar from './components/common/Navbar';
@@ -22,51 +23,65 @@ const WishlistPage = lazy(() => import('./pages/WishlistPage'));
 const PrivacyPolicyPage = lazy(() => import('./pages/PrivacyPolicyPage'));
 const ShippingPolicyPage = lazy(() => import('./pages/ShippingPolicyPage'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
+const LoginPage = lazy(() => import('./pages/LoginPage'));
+const SignupPage = lazy(() => import('./pages/SignupPage'));
+const ProfilePage = lazy(() => import('./pages/ProfilePage'));
+const OrderHistoryPage = lazy(() => import('./pages/OrderHistoryPage'));
+const OrderConfirmationPage = lazy(() => import('./pages/OrderConfirmationPage'));
+const AdminDashboardPage = lazy(() => import('./pages/AdminDashboardPage'));
 
 function App() {
   return (
-    <CartProvider>
-      <BrowserRouter>
-        <div className="min-h-screen bg-[#FDFBF7] flex flex-col justify-between relative selection:bg-amber-100">
-          
-          <div>
-            {/* Announcement Offer Bar Ticker */}
-            <AnnouncementBar />
+    <AuthProvider>
+      <CartProvider>
+        <BrowserRouter>
+          <div className="min-h-screen bg-[#FDFBF7] flex flex-col justify-between relative selection:bg-amber-100">
+            
+            <div>
+              {/* Announcement Offer Bar Ticker */}
+              <AnnouncementBar />
 
-            {/* Global Sticky Navigation Header */}
-            <Navbar />
+              {/* Global Sticky Navigation Header */}
+              <Navbar />
 
-            {/* Core Application Page Routing Tree Switchboard */}
-            <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
-              <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/shop" element={<ShopPage />} />
-                <Route path="/product/:productId" element={<ProductDetailsPage />} />
-                <Route path="/about" element={<AboutPage />} />
-                <Route path="/contact" element={<ContactPage />} />
-                <Route path="/blog" element={<BlogPage />} />
-                <Route path="/faq" element={<FAQPage />} />
-                <Route path="/cart-checkout" element={<CheckoutPage />} />
-                <Route path="/wishlist" element={<WishlistPage />} />
-                <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
-                <Route path="/shipping-policy" element={<ShippingPolicyPage />} />
-                <Route path="*" element={<NotFoundPage />} />
-              </Routes>
-            </Suspense>
+              {/* Core Application Page Routing Tree Switchboard */}
+              <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
+                <Routes>
+                  <Route path="/" element={<HomePage />} />
+                  <Route path="/shop" element={<ShopPage />} />
+                  <Route path="/product/:productId" element={<ProductDetailsPage />} />
+                  <Route path="/about" element={<AboutPage />} />
+                  <Route path="/contact" element={<ContactPage />} />
+                  <Route path="/blog" element={<BlogPage />} />
+                  <Route path="/faq" element={<FAQPage />} />
+                  <Route path="/cart-checkout" element={<CheckoutPage />} />
+                  <Route path="/wishlist" element={<WishlistPage />} />
+                  <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+                  <Route path="/shipping-policy" element={<ShippingPolicyPage />} />
+                  <Route path="/login" element={<LoginPage />} />
+                  <Route path="/signup" element={<SignupPage />} />
+                  <Route path="/profile" element={<ProfilePage />} />
+                  <Route path="/orders" element={<OrderHistoryPage />} />
+                  <Route path="/order-confirmation" element={<OrderConfirmationPage />} />
+                  <Route path="/admin" element={<AdminDashboardPage />} />
+                  <Route path="*" element={<NotFoundPage />} />
+                </Routes>
+              </Suspense>
+            </div>
+
+            {/* Global Slide-Over Utility Drawers */}
+            <CartDrawer />
+
+            {/* Global Botanical-Accent Footer Component */}
+            <Footer />
+
+            {/* Shoppable Reel Video PIP widget */}
+            <FloatingReel />
+            
           </div>
-
-          {/* Global Slide-Over Utility Drawers */}
-          <CartDrawer />
-
-          {/* Global Botanical-Accent Footer Component */}
-          <Footer />
-
-          {/* Shoppable Reel Video PIP widget */}
-          <FloatingReel />
-          
-        </div>
-      </BrowserRouter>
-    </CartProvider>
+        </BrowserRouter>
+      </CartProvider>
+    </AuthProvider>
   );
 }
 

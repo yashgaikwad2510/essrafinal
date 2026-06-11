@@ -39,7 +39,7 @@ const ShippingPolicyPage = () => {
             <li>Tier 2 & Regional India Areas: 5 — 7 Business Days.</li>
           </ul>
           <p>
-            As structured inside our interactive checkout calculation summaries, orders carrying basket subtotals exceeding ₹1,500 enjoy complimentary premium tracking shipping across our networks. Orders below this threshhold carry a standard flat handling fee of ₹150.
+            As structured inside our interactive checkout calculation summaries, orders carrying basket subtotals exceeding ₹1,500 enjoy complimentary premium tracking shipping across our networks. Orders below this threshold carry a standard flat handling fee of ₹150.
           </p>
         </section>
 

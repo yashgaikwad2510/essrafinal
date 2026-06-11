@@ -8,6 +8,8 @@ import { useCart } from '../context/CartContext';
 const ShopPage = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [activeRitualProduct, setActiveRitualProduct] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [sortBy, setSortBy] = useState("newest"); // "newest", "price-low", "price-high"
   const { products, addToCart, loading, error } = useCart();
 
   const categories = [
@@ -17,9 +19,15 @@ const ShopPage = () => {
     { id: "fragrance", label: "Scent (Aroma)" }
   ];
 
-  const filteredProducts = selectedCategory === "All"
-    ? products
-    : products.filter(p => p.category === selectedCategory);
+  const filteredProducts = products
+    .filter(p => selectedCategory === "All" || p.category === selectedCategory)
+    .filter(p => p.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                 (p.ingredients && p.ingredients.some(i => i.toLowerCase().includes(searchQuery.toLowerCase()))))
+    .sort((a, b) => {
+      if (sortBy === "price-low") return a.price - b.price;
+      if (sortBy === "price-high") return b.price - a.price;
+      return 0; // "newest" or default
+    });
 
   if (loading) {
     return (
@@ -33,7 +41,7 @@ const ShopPage = () => {
     <main className="w-full bg-[#FDFBF7] min-h-screen py-12 px-4 md:px-8 max-w-7xl mx-auto text-neutral-900 font-sans">
       
       {/* HEADER PANEL */}
-      <div className="text-center mb-12">
+      <div className="text-center mb-8">
         <span className="text-[10px] uppercase tracking-[0.35em] font-bold text-amber-900/80 block mb-2">
           Purely Ayurvedic • Naturally Divine
         </span>
@@ -41,6 +49,34 @@ const ShopPage = () => {
           The Storefront Collection
         </h1>
         <div className="w-12 h-[1px] bg-neutral-200 mx-auto mt-4" />
+      </div>
+
+      {/* SEARCH AND SORT BAR */}
+      <div className="flex flex-col md:flex-row justify-between items-center max-w-6xl mx-auto mb-8 gap-4">
+        <div className="relative w-full md:w-96">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-neutral-400">
+            <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+          </svg>
+          <input 
+            type="text" 
+            placeholder="Search by product or ingredient..." 
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full bg-white border border-neutral-200 py-3 pl-10 pr-4 rounded-full text-xs outline-hidden focus:border-amber-900/30 transition-colors"
+          />
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="text-[10px] uppercase tracking-widest font-bold text-neutral-400">Sort By:</span>
+          <select 
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value)}
+            className="bg-transparent border-none text-xs font-bold uppercase tracking-widest text-neutral-900 outline-hidden cursor-pointer"
+          >
+            <option value="newest">Newest</option>
+            <option value="price-low">Price: Low to High</option>
+            <option value="price-high">Price: High to Low</option>
+          </select>
+        </div>
       </div>
 
       {/* FILTERS */}
@@ -148,7 +184,7 @@ const ShopPage = () => {
                 <div className="w-full bg-[#FAF8F3] border border-amber-900/10 rounded-xl p-5 mt-3 text-left animate-slideDown shadow-inner">
                   <div className="mb-3">
                     <span className="text-[9px] font-bold uppercase tracking-widest text-neutral-400 block mb-0.5">Ingredients</span>
-                    <p className="text-[11px] text-neutral-700 font-light leading-relaxed">{product.ingredients}</p>
+                    <p className="text-[11px] text-neutral-700 font-light leading-relaxed">{Array.isArray(product.ingredients) ? product.ingredients.join(', ') : product.ingredients}</p>
                   </div>
                   <div className="mb-2">
                     <span className="text-[9px] font-bold uppercase tracking-widest text-neutral-400 block mb-1">The Sacred Ritual</span>

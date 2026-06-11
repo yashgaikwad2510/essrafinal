@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
-
-const FloatingReel = () => {
+import { useNavigate } from 'react-router-dom';const FloatingReel = () => {
   const [isVisible, setIsVisible] = useState(true);
   const videoRef = useRef(null);
+  const navigate = useNavigate();
 
   // Auto-play insurance for modern browsers (ensures muted playback starts immediately)
   useEffect(() => {
@@ -38,7 +38,7 @@ const FloatingReel = () => {
             }
           }}
           className="w-full h-full object-cover cursor-pointer"
-          onClick={() => window.location.href = '/shop'} // Direct tap redirects directly to your storefront catalog
+          onClick={() => navigate('/shop')} // Direct tap redirects directly to your storefront catalog
         />
 
         {/* =========================================================================
@@ -63,7 +63,7 @@ const FloatingReel = () => {
         {/* Luxury Expand / Link Out Monogram Overlay on Hover */}
         <div 
           className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center cursor-pointer z-20"
-          onClick={() => window.location.href = '/shop'}
+          onClick={() => navigate('/shop')}
         >
           <div className="w-8 h-8 rounded-full bg-white/90 flex items-center justify-center shadow-md transform scale-90 group-hover:scale-100 transition-transform duration-300">
             {/* Minimalist expand link icon arrow matching the screenshot token */}

@@ -1,6 +1,5 @@
 import React from 'react';
-
-const blogPosts = [
+import { Link } from 'react-router-dom';const blogPosts = [
   {
     id: "post-1",
     category: "Rituals",
@@ -66,7 +65,7 @@ const BlogPage = () => {
             <span className="text-neutral-400 font-normal">{featuredPost.readTime}</span>
           </div>
           <h2 className="font-serif text-xl md:text-2xl uppercase tracking-wide text-neutral-900 leading-tight mb-4 hover:text-amber-900 transition-colors">
-            <a href={`/blog/${featuredPost.id}`}>{featuredPost.title}</a>
+            <Link to={`/blog/${featuredPost.id}`}>{featuredPost.title}</Link>
           </h2>
           <p className="font-sans text-xs md:text-sm text-neutral-500 leading-relaxed font-light tracking-wide mb-6">
             {featuredPost.excerpt}
@@ -96,7 +95,7 @@ const BlogPage = () => {
               <span className="text-neutral-400 font-normal">{post.readTime}</span>
             </div>
             <h3 className="font-serif text-base uppercase tracking-wide text-neutral-900 leading-snug mb-3 hover:text-amber-900 transition-colors line-clamp-2">
-              <a href={`/blog/${post.id}`}>{post.title}</a>
+              <Link to={`/blog/${post.id}`}>{post.title}</Link>
             </h3>
             <p className="font-sans text-xs text-neutral-500 leading-relaxed font-light tracking-wide mb-5 line-clamp-3">
               {post.excerpt}
