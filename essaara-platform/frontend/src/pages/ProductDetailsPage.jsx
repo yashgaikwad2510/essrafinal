@@ -69,12 +69,18 @@ const ProductDetailsPage = () => {
               LEFT COLUMN: PRODUCT IMAGE
               ========================================================================= */}
           <div className="w-full">
-            <div className="w-full aspect-square bg-white rounded-lg overflow-hidden flex items-center justify-center sticky top-24">
-              <img 
-                src={product.productImages[0]} 
-                alt={product.name} 
-                className="w-full h-full object-cover"
-              />
+            <div className="w-full aspect-square bg-[#FAF9F6] rounded-lg overflow-hidden flex items-center justify-center sticky top-24">
+              {product.productImages?.[0] ? (
+                <img 
+                  src={product.productImages[0]} 
+                  alt={product.name} 
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="flex flex-col items-center justify-center text-neutral-300">
+                  <span className="font-serif text-6xl font-extralight tracking-widest">E</span>
+                </div>
+              )}
             </div>
           </div>
 
@@ -190,7 +196,7 @@ const ProductDetailsPage = () => {
                 {activeTab === 'ingredients' && (
                   <div className="pb-6 animate-fadeIn">
                     <div className="flex flex-wrap gap-2">
-                      {product.ingredients.map((item, idx) => (
+                      {product.ingredients?.map((item, idx) => (
                         <span key={idx} className="bg-neutral-100 text-neutral-700 text-xs font-sans px-3 py-1.5 rounded-full">
                           {item}
                         </span>
@@ -216,7 +222,7 @@ const ProductDetailsPage = () => {
                 {activeTab === 'howToUse' && (
                   <div className="pb-6 animate-fadeIn">
                     <ol className="list-decimal list-inside space-y-2 font-sans text-sm text-neutral-600">
-                      {product.howToUse.map((step, idx) => (
+                      {product.howToUse?.map((step, idx) => (
                         <li key={idx} className="leading-relaxed">
                           {step}
                         </li>

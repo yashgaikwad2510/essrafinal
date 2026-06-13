@@ -1,5 +1,6 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import { essaaraProducts } from '../data/products'; // Direct single source of truth!
+import { fetchProducts } from '../lib/api';
 
 const CartContext = createContext();
 
@@ -8,6 +9,43 @@ export const CartProvider = ({ children }) => {
   const [products, setProducts] = useState(essaaraProducts);
   const [cart, setCart] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isLoadingProducts, setIsLoadingProducts] = useState(false);
+  const [productError, setProductError] = useState('');
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const loadProducts = async () => {
+      setIsLoadingProducts(true);
+      setProductError('');
+
+      try {
+        const data = await fetchProducts();
+        if (!isMounted) return;
+
+        const normalizedProducts = data.products.map((product) => ({
+          ...product,
+          id: product.productId
+        }));
+
+        setProducts(normalizedProducts);
+      } catch (error) {
+        if (isMounted) {
+          setProductError('Unable to refresh products. Showing saved catalog.');
+        }
+      } finally {
+        if (isMounted) {
+          setIsLoadingProducts(false);
+        }
+      }
+    };
+
+    loadProducts();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   // 1. GLOBAL ADD-TO-CART (Updates bag items and checks real inventory stock pools)
   const addToCart = (productId, selectedOption) => {
@@ -78,6 +116,10 @@ export const CartProvider = ({ children }) => {
     );
   };
 
+  const clearCart = () => {
+    setCart([]);
+  };
+
   const getSubtotal = () => {
     return cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
   };
@@ -85,12 +127,15 @@ export const CartProvider = ({ children }) => {
   return (
     <CartContext.Provider value={{ 
       products, // Exposed globally! Components read directly from this reactive array
+      isLoadingProducts,
+      productError,
       cart, 
       isCartOpen, 
       setIsCartOpen, 
       addToCart, 
       removeFromCart, 
       updateQuantity, 
+      clearCart,
       getSubtotal 
     }}>
       {children}

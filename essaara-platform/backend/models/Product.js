@@ -1,14 +1,29 @@
 const mongoose = require('mongoose');
 
 const productSchema = new mongoose.Schema({
+  productId: {
+    type: String,
+    required: true,
+    unique: true,
+    trim: true,
+    lowercase: true,
+    match: [/^[a-z0-9-]+$/, 'Product id can only include lowercase letters, numbers, and hyphens.']
+  },
   name: {
     type: String,
     required: true,
-    trim: true
+    trim: true,
+    maxlength: 120
+  },
+  tagline: {
+    type: String,
+    trim: true,
+    maxlength: 220
   },
   description: {
     type: String,
-    required: true
+    trim: true,
+    maxlength: 2000
   },
   price: {
     type: Number,
@@ -18,7 +33,18 @@ const productSchema = new mongoose.Schema({
   category: {
     type: String,
     required: true,
-    enum: ['Candle', 'Soap', 'Skincare', 'Other'] // Adjust as necessary
+    trim: true,
+    maxlength: 80
+  },
+  subCategory: {
+    type: String,
+    trim: true,
+    maxlength: 80
+  },
+  netWt: {
+    type: String,
+    trim: true,
+    maxlength: 80
   },
   stock: {
     type: Number,
@@ -26,37 +52,43 @@ const productSchema = new mongoose.Schema({
     min: 0,
     default: 0
   },
-  images: [{
-    type: String // Array of image URLs
-  }],
-  
-  // Dynamic fields supporting rich content
-  keyBenefits: [{
+  productImages: [{
     type: String,
-    trim: true
+    trim: true,
+    maxlength: 300
   }],
-  coreIngredients: [{
+
+  ingredients: [{
     type: String,
-    trim: true
+    trim: true,
+    maxlength: 160
   }],
-  fullIngredientList: [{
-    type: String, // Supports extensive lists like the soap's 31 herbs
-    trim: true
-  }],
-  safetyWarnings: [{
+  howToUse: [{
     type: String,
-    trim: true
+    trim: true,
+    maxlength: 260
   }],
-  howToUse: {
-    type: String // Alternatively, an array of strings if steps are needed
+  otherInfo: {
+    type: String,
+    trim: true,
+    maxlength: 1200
   },
-  uniqueFeatures: [{
-    type: String, // E.g., 'Plantable concept for candle'
-    trim: true
-  }]
+  expiry: {
+    type: String,
+    trim: true,
+    maxlength: 120
+  },
+  isActive: {
+    type: Boolean,
+    default: true,
+    index: true
+  }
 }, {
   timestamps: true
 });
+
+// Indexes are already defined in the schema properties
+productSchema.index({ category: 1, isActive: 1 });
 
 const Product = mongoose.model('Product', productSchema);
 

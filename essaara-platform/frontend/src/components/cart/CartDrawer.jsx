@@ -1,8 +1,10 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 
 const CartDrawer = () => {
   const { cart, isCartOpen, setIsCartOpen, removeFromCart, updateQuantity, getSubtotal } = useCart();
+  const navigate = useNavigate();
 
   if (!isCartOpen) return null;
 
@@ -55,7 +57,13 @@ const CartDrawer = () => {
               <span>Subtotal</span>
               <span>₹{getSubtotal().toLocaleString('en-IN')}</span>
             </div>
-            <button className="w-full bg-black text-white py-3 uppercase tracking-widest text-xs font-bold cursor-pointer">
+            <button 
+              onClick={() => {
+                setIsCartOpen(false);
+                navigate('/cart-checkout');
+              }}
+              className="w-full bg-black text-white py-3 uppercase tracking-widest text-xs font-bold cursor-pointer transition-colors hover:bg-neutral-800"
+            >
               Checkout
             </button>
           </div>

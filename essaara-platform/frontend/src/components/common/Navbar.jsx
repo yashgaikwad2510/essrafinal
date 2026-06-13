@@ -1,9 +1,11 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
+import { useUserAuth } from '../../context/UserAuthContext';
 
 const Navbar = () => {
   const { cart, setIsCartOpen } = useCart();
+  const { user } = useUserAuth();
   const location = useLocation();
 
   // Calculate the live number of items in the cart
@@ -41,6 +43,11 @@ const Navbar = () => {
 
         {/* Right Section: Wishlist & Bag */}
         <div className="w-1/3 flex justify-end items-center gap-6 text-xs font-medium uppercase tracking-widest text-neutral-600">
+          {user ? (
+            <Link to="/account" className="hover:text-black transition-colors">account</Link>
+          ) : (
+            <Link to="/auth" className="hover:text-black transition-colors">login</Link>
+          )}
           <Link 
             to="/wishlist" 
             className="hover:text-black transition-colors"

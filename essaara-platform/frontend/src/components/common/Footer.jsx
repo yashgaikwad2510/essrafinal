@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 const Footer = () => {
   const [email, setEmail] = useState('');
   const [consentChecked, setConsentChecked] = useState(false);
+  const location = useLocation();
+  const isHome = location.pathname === '/';
 
   const handleSubscribe = (e) => {
     e.preventDefault();
@@ -23,13 +26,15 @@ const Footer = () => {
       {/* =========================================================================
           LAYER 0: WOMAN IMAGE BACKGROUND (NEAR FOOTER)
           ========================================================================= */}
-      <div className="absolute top-0 right-[3%] -translate-y-[60%] z-0 pointer-events-none w-[250px] md:w-[350px] lg:w-[450px] hidden sm:block opacity-90 mix-blend-multiply">
-        <img 
-          src="/images/woman-in-green.png"
-          alt="Woman in green"
-          className="w-full h-auto object-contain"
-        />
-      </div>
+      {isHome && (
+        <div className="absolute top-0 right-[3%] -translate-y-[60%] z-0 pointer-events-none w-[250px] md:w-[350px] lg:w-[450px] hidden sm:block opacity-90 mix-blend-multiply">
+          <img 
+            src="/images/woman-in-green.png"
+            alt="Woman in green"
+            className="w-full h-auto object-contain"
+          />
+        </div>
+      )}
 
       {/* =========================================================================
           LAYER 1: TRUST DISCLAIMER AREA (WHITE CANVAS)
@@ -49,22 +54,26 @@ const Footer = () => {
       <div className="relative bg-[#363636] text-[#F4EFE6] pt-16 pb-12 px-6 md:px-12 lg:px-16 mt-6">
         
         {/* Left Plant Asset */}
-        <div className="absolute left-0 top-0 -translate-y-[60%] z-10 pointer-events-none w-[200px] md:w-[280px] lg:w-[350px] hidden sm:block">
-          <img 
-            src="/images/leaf-left.png"
-            alt="Ayurvedic Botanical Accent"
-            className="w-full h-auto object-contain"
-          />
-        </div>
+        {isHome && (
+          <div className="absolute left-0 top-0 -translate-y-[60%] z-10 pointer-events-none w-[200px] md:w-[280px] lg:w-[350px] hidden sm:block">
+            <img 
+              src="/images/leaf-left.png"
+              alt="Ayurvedic Botanical Accent"
+              className="w-full h-auto object-contain"
+            />
+          </div>
+        )}
 
         {/* Right Plant Asset */}
-        <div className="absolute right-0 top-0 -translate-y-[85%] z-10 pointer-events-none w-[220px] md:w-[300px] lg:w-[380px] hidden sm:block">
-          <img 
-            src="/images/leaf-right.png"
-            alt="Natural Flora Accent"
-            className="w-full h-auto object-contain"
-          />
-        </div>
+        {isHome && (
+          <div className="absolute right-0 top-0 -translate-y-[85%] z-10 pointer-events-none w-[220px] md:w-[300px] lg:w-[380px] hidden sm:block">
+            <img 
+              src="/images/leaf-right.png"
+              alt="Natural Flora Accent"
+              className="w-full h-auto object-contain"
+            />
+          </div>
+        )}
 
         <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-y-10 gap-x-6 relative z-20">
           
